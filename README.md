@@ -5,13 +5,7 @@ A crappier version of git
 ### Building
 
 ```
-cmake --build cmake-build-debug --target fgit
-```
-
-### Running
-
-```
-./cmake-build-debug/fgit
+cmake --build . --target fgit
 ```
 
 ### Export Compile Commands
