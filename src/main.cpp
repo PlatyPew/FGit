@@ -1,6 +1,8 @@
+#include "init.hpp"
+
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Init::init();
     return 0;
 }
