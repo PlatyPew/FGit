@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories("${PROJECT_SOURCE_DIR}/lib/dmp/")
 
 include_directories("${PROJECT_SOURCE_DIR}/include/")
-add_executable(fgit src/main.cpp src/init.cpp)
+add_executable(fgit src/main.cpp src/init.cpp src/diff.cpp)

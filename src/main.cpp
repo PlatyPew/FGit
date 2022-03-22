@@ -1,3 +1,4 @@
+#include "diff.hpp"
 #include "init.hpp"
 
 #include <iostream>
