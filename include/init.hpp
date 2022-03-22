@@ -16,5 +16,4 @@ class Init {
 
   public:
     static bool init();
-    static bool init(string);
 };
