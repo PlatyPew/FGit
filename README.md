@@ -4,18 +4,10 @@ A crappier version of git
 
 ### Building
 
-```
-cmake --build cmake-build-debug --target fgit
-```
+``` sh
+# Configure CMake
+cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 
-### Running
-
-```
-./cmake-build-debug/fgit
-```
-
-### Export Compile Commands
-
-```
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+# Build Cmake
+cmake --build build --config Debug
 ```
