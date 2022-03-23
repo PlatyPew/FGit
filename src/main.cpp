@@ -1,6 +1,8 @@
 #include "diff.hpp"
 #include "init.hpp"
 
+#include "blob.hpp"
+
 #include <iostream>
 
 using namespace std;
@@ -16,6 +18,10 @@ int main(int argc, char** argv) {
 
         runSubCmd(subcmd);
     }
+
+    Blob blob("./CMakeLists.txt");
+    createBlob(blob);
+    cout << blob.getId() << endl;
 
     return 0;
 }

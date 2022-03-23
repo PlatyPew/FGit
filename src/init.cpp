@@ -55,7 +55,7 @@ bool Init::init() {
         cout << "FGit Repository could not be initialised! Aborting..." << endl;
         return false;
     }
-    head << "master: ";
+    head << "master";
     head.close();
 
     cout << "FGit Repository initialised successfully!" << endl;

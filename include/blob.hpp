@@ -8,12 +8,17 @@ namespace fs = filesystem;
 
 class Blob {
   private:
-    const string path;
+    string path;
     string id;
     fs::perms perms;
     string diff;
 
-public:
+    string createDiff();
+    string createDiff(string head);
+
+    friend string createId(Blob blob);
+
+  public:
     Blob(string path);
 
     string getId();
@@ -21,9 +26,5 @@ public:
     fs::perms getPerms();
     string getDiff();
 
-    void setId(string id);
-    void setPerms(fs::perms perms);
-    void setDiff(string diff);
-
-    void createBlob();
+    friend void createBlob(Blob& blob);
 };

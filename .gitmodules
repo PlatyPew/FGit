@@ -7,3 +7,6 @@
 [submodule "lib/zpp_bits"]
 	path = lib/zpp_bits
 	url = https://github.com/eyalz800/zpp_bits.git
+[submodule "lib/cereal"]
+	path = lib/cereal
+	url = https://github.com/USCiLab/cereal.git
