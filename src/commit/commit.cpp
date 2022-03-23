@@ -1,9 +1,14 @@
 #include "commit.hpp"
 
 #include "blob.hpp"
+#include "defaults.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <vector>
+
+using namespace std;
+namespace fs = filesystem;
 
 Commit::Commit(vector<Blob> blobs, string author, string message) {
     this->blobs = blobs;
@@ -49,4 +54,8 @@ void Commit::setAuthor(string author) {
 
 void Commit::setMessage(string message) {
     this->message = message;
+}
+
+bool Commit::isGenesis() {
+    return fs::is_empty(Defaults::fgitObjects);
 }

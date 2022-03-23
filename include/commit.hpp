@@ -18,15 +18,19 @@ class Commit {
   public:
     Commit(vector<Blob> blobs, string author, string message);
 
+    string getCommitHash();
+    vector<Blob> getBlobs();
+    string getPrevHash();
+    string getAuthor();
+    string getMessage();
+
     void setCommitHash(string commitHash);
     void setBlobs(vector<Blob> blobs);
     void setPrevHash(string prevHash);
     void setAuthor(string author);
     void setMessage(string message);
 
-    string getCommitHash();
-    vector<Blob> getBlobs();
-    string getPrevHash();
-    string getAuthor();
-    string getMessage();
+    static bool isGenesis();
+
+    friend void writeObject(Commit commit);
 };
