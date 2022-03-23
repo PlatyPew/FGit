@@ -43,11 +43,9 @@ string Blob::createDiff() {
 
 string createId(Blob blob) {
     // Serialise data
-    stringstream ss;
-    cereal::BinaryOutputArchive oarchive(ss);
+    stringstream ss = createSerial(blob);
 
-    oarchive(blob.path, blob.perms, blob.diff);
-
+    // Hash serial
     SHA1 checksum;
     checksum.update(ss.str());
     return checksum.final();
@@ -71,4 +69,12 @@ string Blob::getDiff() {
 
 void createBlob(Blob& blob) {
     blob.id = createId(blob);
+}
+
+stringstream createSerial(Blob blob) {
+    stringstream ss;
+    cereal::BinaryOutputArchive oarchive(ss);
+    blob.serialize(oarchive);
+
+    return ss;
 }

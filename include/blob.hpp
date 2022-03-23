@@ -18,6 +18,10 @@ class Blob {
 
     friend string createId(Blob blob);
 
+    template <class Archive> void serialize(Archive& archive) {
+        archive(path, perms, diff);
+    }
+
   public:
     Blob(string path);
 
@@ -27,4 +31,5 @@ class Blob {
     string getDiff();
 
     friend void createBlob(Blob& blob);
+    friend stringstream createSerial(Blob blob);
 };
