@@ -1,3 +1,6 @@
 [submodule "lib/dmp"]
 	path = lib/dmp
 	url = https://github.com/leutloff/diff-match-patch-cpp-stl.git
+[submodule "lib/sha1"]
+	path = lib/sha1
+	url = https://github.com/vog/sha1.git
