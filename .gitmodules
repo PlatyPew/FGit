@@ -4,3 +4,6 @@
 [submodule "lib/sha1"]
 	path = lib/sha1
 	url = https://github.com/vog/sha1.git
+[submodule "lib/zpp_bits"]
+	path = lib/zpp_bits
+	url = https://github.com/eyalz800/zpp_bits.git
