@@ -29,7 +29,7 @@ class Blob {
     }
 
   public:
-    Blob();
+    Blob(){};
     Blob(string path);
 
     string getId();

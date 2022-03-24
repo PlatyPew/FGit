@@ -24,7 +24,7 @@ class Commit {
     friend void fromSerial(stringstream& serial, Commit& commit);
 
   public:
-    Commit();
+    Commit(){};
     Commit(vector<Blob> blobs, string author, string message);
 
     string getAuthor();
@@ -34,6 +34,7 @@ class Commit {
     string getPrevId();
 
     static bool isGenesis();
+    static Commit commit(vector<string> files, string author, string message);
 
     friend void createCommit(Commit& commit);
     friend ostream& operator<<(ostream& out, const Commit& commit);

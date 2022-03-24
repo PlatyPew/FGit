@@ -16,8 +16,6 @@
 using namespace std;
 namespace fs = filesystem;
 
-Commit::Commit() {}
-
 Commit::Commit(vector<Blob> blobs, string author, string message) {
     this->blobs = blobs;
     this->author = author;
@@ -57,6 +55,20 @@ string Commit::getMessage() {
 
 bool Commit::isGenesis() {
     return fs::is_empty(Defaults::fgitObjects);
+};
+
+Commit Commit::commit(vector<string> files, string author, string message) {
+    vector<Blob> blobs;
+    for (string f : files) {
+        Blob b(f);
+        createBlob(b);
+        blobs.push_back(b);
+    }
+
+    Commit c(blobs, author, message);
+    createCommit(c);
+
+    return c;
 }
 
 void createCommit(Commit& commit) {

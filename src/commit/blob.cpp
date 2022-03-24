@@ -14,8 +14,6 @@
 using namespace std;
 namespace fs = filesystem;
 
-Blob::Blob() {}
-
 Blob::Blob(string path) {
     this->path = path;
     this->perms = fs::status(path).permissions();
