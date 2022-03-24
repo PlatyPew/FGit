@@ -90,3 +90,10 @@ ostream& operator<<(ostream& out, const Blob& blob) {
     out << ss.str();
     return out;
 }
+
+istream& operator>>(istream& in, Blob& blob) {
+    stringstream ss;
+    ss << in.rdbuf();
+    fromSerial(ss, blob);
+    return in;
+}

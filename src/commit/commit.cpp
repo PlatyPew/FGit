@@ -16,6 +16,8 @@
 using namespace std;
 namespace fs = filesystem;
 
+Commit::Commit() {}
+
 Commit::Commit(vector<Blob> blobs, string author, string message) {
     this->blobs = blobs;
     this->author = author;
@@ -76,4 +78,11 @@ ostream& operator<<(ostream& out, const Commit& commit) {
     toSerial(ss, commit);
     out << ss.str();
     return out;
+}
+
+istream& operator>>(istream& in, Commit& commit) {
+    stringstream ss;
+    ss << in.rdbuf();
+    fromSerial(ss, commit);
+    return in;
 }

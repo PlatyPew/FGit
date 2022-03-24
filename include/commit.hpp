@@ -24,6 +24,7 @@ class Commit {
     friend void fromSerial(stringstream& serial, Commit& commit);
 
   public:
+    Commit();
     Commit(vector<Blob> blobs, string author, string message);
 
     string getAuthor();
@@ -36,6 +37,7 @@ class Commit {
 
     friend void createCommit(Commit& commit);
     friend ostream& operator<<(ostream& out, const Commit& commit);
+    friend istream& operator>>(istream& in, Commit& commit);
 
     template <class Archive> void save(Archive& archive) const {
         archive(author, message, id, blobs, prevId);

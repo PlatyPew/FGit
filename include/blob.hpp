@@ -39,5 +39,5 @@ class Blob {
 
     friend void createBlob(Blob& blob);
     friend ostream& operator<<(ostream& out, const Blob& blob);
-    friend istream& operator>>(istream& in, const string blob);
+    friend istream& operator>>(istream& in, Blob& blob);
 };

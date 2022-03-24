@@ -21,8 +21,5 @@ int main(int argc, char** argv) {
         runSubCmd(subcmd);
     }
 
-    Blob blob("./CMakeLists.txt");
-    createBlob(blob);
-
     return 0;
 }
