@@ -1,15 +1,12 @@
 #include "init.hpp"
 
+#include "defaults.hpp"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 
 using namespace std;
-
-const string Init::directory = ".fgit";
-const string Init::objects = "objects";
-const string Init::refs = "refs";
-const string Init::heads = "heads";
 
 /**
  * @brief Checks if directory already exists
@@ -17,7 +14,7 @@ const string Init::heads = "heads";
  * @return If directory exists
  */
 bool Init::exists() {
-    return filesystem::is_directory(directory) && filesystem::exists(directory);
+    return filesystem::is_directory(Defaults::fgitDirectory) && filesystem::exists(Defaults::fgitDirectory);
 }
 
 /**
@@ -26,10 +23,10 @@ bool Init::exists() {
  * @return If file tree is successful
  */
 bool Init::createTree() {
-    if (!filesystem::create_directory(directory) ||
-        !filesystem::create_directory(directory + "/" + objects) ||
-        !filesystem::create_directory(directory + "/" + refs) ||
-        !filesystem::create_directory(directory + "/" + refs + "/" + heads))
+    if (!filesystem::create_directory(Defaults::fgitDirectory) ||
+        !filesystem::create_directory(Defaults::fgitObjects) ||
+        !filesystem::create_directory(Defaults::fgitRefs) ||
+        !filesystem::create_directory(Defaults::fgitHeads))
         return false;
 
     return true;
@@ -53,12 +50,12 @@ bool Init::init() {
         return false;
     }
 
-    ofstream head(directory + "/HEAD");
+    ofstream head(Defaults::fgitDirectory + "/HEAD");
     if (head.fail()) {
         cout << "FGit Repository could not be initialised! Aborting..." << endl;
         return false;
     }
-    head << "master: ";
+    head << "master";
     head.close();
 
     cout << "FGit Repository initialised successfully!" << endl;
