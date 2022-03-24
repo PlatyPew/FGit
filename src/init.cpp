@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+namespace fs = filesystem;
 
 /**
  * @brief Checks if directory already exists
@@ -14,7 +15,7 @@ using namespace std;
  * @return If directory exists
  */
 bool Init::exists() {
-    return filesystem::is_directory(Defaults::fgitDirectory) && filesystem::exists(Defaults::fgitDirectory);
+    return fs::is_directory(Defaults::fgitDirectory) && fs::exists(Defaults::fgitDirectory);
 }
 
 /**
@@ -23,10 +24,10 @@ bool Init::exists() {
  * @return If file tree is successful
  */
 bool Init::createTree() {
-    if (!filesystem::create_directory(Defaults::fgitDirectory) ||
-        !filesystem::create_directory(Defaults::fgitObjects) ||
-        !filesystem::create_directory(Defaults::fgitRefs) ||
-        !filesystem::create_directory(Defaults::fgitHeads))
+    if (!fs::create_directory(Defaults::fgitDirectory) ||
+        !fs::create_directory(Defaults::fgitObjects) ||
+        !fs::create_directory(Defaults::fgitRefs) ||
+        !fs::create_directory(Defaults::fgitHeads))
         return false;
 
     return true;
