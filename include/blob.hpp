@@ -32,4 +32,5 @@ class Blob {
 
     friend void createBlob(Blob& blob);
     friend stringstream createSerial(Blob blob);
+    friend ostream& operator<<(ostream& out, const Blob& blob);
 };

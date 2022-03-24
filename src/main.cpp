@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
     Blob blob("./CMakeLists.txt");
     createBlob(blob);
-    cout << blob.getId() << endl;
+    cout << blob;
 
     return 0;
 }

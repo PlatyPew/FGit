@@ -78,3 +78,8 @@ stringstream createSerial(Blob blob) {
 
     return ss;
 }
+
+ostream& operator<<(ostream& out, const Blob& blob) {
+    out << createSerial(blob).str();
+    return out;
+}
