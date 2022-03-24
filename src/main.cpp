@@ -24,13 +24,5 @@ int main(int argc, char** argv) {
     Blob blob("./CMakeLists.txt");
     createBlob(blob);
 
-    vector<Blob> blobs;
-    blobs.push_back(blob);
-
-    Commit commit(blobs, "Platy", "Initial Commit");
-    createCommit(commit);
-
-    cout << commit;
-
     return 0;
 }

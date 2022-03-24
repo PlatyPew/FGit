@@ -22,13 +22,14 @@ class Blob {
 
     friend string createId(Blob blob);
     friend void toSerial(stringstream& serial, Blob blob);
-    friend void fromSerial(stringstream serial, Blob& blob);
+    friend void fromSerial(stringstream& serial, Blob& blob);
 
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff);
     }
 
   public:
+    Blob();
     Blob(string path);
 
     string getId();

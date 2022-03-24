@@ -66,8 +66,9 @@ void toSerial(stringstream& serial, Commit commit) {
     oarchive(commit);
 }
 
-void fromSerial(stringstream serial, Commit& commit) {
-
+void fromSerial(stringstream& serial, Commit& commit) {
+    cereal::BinaryInputArchive iarchive(serial);
+    iarchive(commit);
 }
 
 ostream& operator<<(ostream& out, const Commit& commit) {

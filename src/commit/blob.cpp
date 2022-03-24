@@ -14,6 +14,8 @@
 using namespace std;
 namespace fs = filesystem;
 
+Blob::Blob() {}
+
 Blob::Blob(string path) {
     this->path = path;
     this->perms = fs::status(path).permissions();
@@ -77,8 +79,8 @@ void toSerial(stringstream& serial, Blob blob) {
     oarchive(blob);
 }
 
-void fromSerial(stringstream serial, Blob& blob) {
-    cereal::BinaryOutputArchive iarchive(serial);
+void fromSerial(stringstream& serial, Blob& blob) {
+    cereal::BinaryInputArchive iarchive(serial);
     iarchive(blob);
 }
 

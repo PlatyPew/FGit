@@ -21,7 +21,7 @@ class Commit {
 
     friend string createId(Commit commit);
     friend void toSerial(stringstream& serial, Commit commit);
-    friend void fromSerial(stringstream serial, Commit& commit);
+    friend void fromSerial(stringstream& serial, Commit& commit);
 
   public:
     Commit(vector<Blob> blobs, string author, string message);
