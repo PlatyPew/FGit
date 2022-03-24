@@ -6,9 +6,9 @@ using std::string;
 
 class Init {
   private:
-    static bool exists();
     static bool createTree();
 
   public:
+    static bool exists();
     static bool init();
 };
