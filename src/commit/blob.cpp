@@ -4,7 +4,6 @@
 
 #include "cereal/archives/binary.hpp"
 #include "cereal/types/string.hpp"
-#include "sha1.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -41,21 +40,6 @@ string Blob::createDiff() {
     return Diff::diff("", ss.str());
 }
 
-string createId(Blob blob) {
-    // Serialise data
-    stringstream ss;
-    toSerial(ss, blob);
-
-    // Hash serial
-    SHA1 checksum;
-    checksum.update(ss.str());
-    return checksum.final();
-}
-
-string Blob::getId() {
-    return this->id;
-}
-
 string Blob::getPath() {
     return this->path;
 }
@@ -66,10 +50,6 @@ fs::perms Blob::getPerms() {
 
 string Blob::getDiff() {
     return this->diff;
-}
-
-void createBlob(Blob& blob) {
-    blob.id = createId(blob);
 }
 
 void toSerial(stringstream& serial, Blob blob) {

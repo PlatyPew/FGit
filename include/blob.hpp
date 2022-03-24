@@ -20,7 +20,6 @@ class Blob {
     string createDiff();
     string createDiff(string head);
 
-    friend string createId(Blob blob);
     friend void toSerial(stringstream& serial, Blob blob);
     friend void fromSerial(stringstream& serial, Blob& blob);
 
@@ -32,12 +31,10 @@ class Blob {
     Blob(){};
     Blob(string path);
 
-    string getId();
     string getPath();
     fs::perms getPerms();
     string getDiff();
 
-    friend void createBlob(Blob& blob);
     friend ostream& operator<<(ostream& out, const Blob& blob);
     friend istream& operator>>(istream& in, Blob& blob);
 };

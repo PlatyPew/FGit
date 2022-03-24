@@ -5,7 +5,7 @@
 #include "cereal/access.hpp"
 
 #include <iostream>
-#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -16,7 +16,7 @@ class Commit {
     string author;
     string message;
     string id;
-    vector<Blob> blobs;
+    map<string, Blob> blobs;
     string prevId;
 
     friend string createId(Commit commit);
@@ -25,16 +25,18 @@ class Commit {
 
   public:
     Commit(){};
-    Commit(vector<Blob> blobs, string author, string message);
+    Commit(map<string, Blob> blobs, string author, string message);
 
     string getAuthor();
     string getMessage();
     string getId();
-    vector<Blob> getBlobs();
+    map<string, Blob> getBlobs();
     string getPrevId();
 
     static bool isGenesis();
     static Commit commit(vector<string> files, string author, string message);
+
+    void writeCommit();
 
     friend void createCommit(Commit& commit);
     friend ostream& operator<<(ostream& out, const Commit& commit);

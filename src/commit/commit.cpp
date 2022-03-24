@@ -4,19 +4,20 @@
 #include "defaults.hpp"
 
 #include "cereal/archives/binary.hpp"
+#include "cereal/types/map.hpp"
 #include "cereal/types/string.hpp"
-#include "cereal/types/vector.hpp"
 #include "sha1.hpp"
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <sstream>
 
 using namespace std;
 namespace fs = filesystem;
 
-Commit::Commit(vector<Blob> blobs, string author, string message) {
+Commit::Commit(map<string, Blob> blobs, string author, string message) {
     this->blobs = blobs;
     this->author = author;
     this->message = message;
@@ -37,7 +38,7 @@ string Commit::getId() {
     return this->id;
 }
 
-vector<Blob> Commit::getBlobs() {
+map<string, Blob> Commit::getBlobs() {
     return this->blobs;
 }
 
@@ -58,17 +59,20 @@ bool Commit::isGenesis() {
 };
 
 Commit Commit::commit(vector<string> files, string author, string message) {
-    vector<Blob> blobs;
+    map<string, Blob> blobs;
     for (string f : files) {
         Blob b(f);
-        createBlob(b);
-        blobs.push_back(b);
+        blobs.insert(pair<string, Blob>(f, b));
     }
 
     Commit c(blobs, author, message);
     createCommit(c);
 
     return c;
+}
+
+void Commit::writeCommit() {
+    cout << this;
 }
 
 void createCommit(Commit& commit) {
