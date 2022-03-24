@@ -8,5 +8,5 @@ namespace Defaults {
 const string fgitDirectory = ".fgit/";
 const string fgitObjects = fgitDirectory + "objects/";
 const string fgitRefs = fgitDirectory + "refs/";
-const string fgitHeads = fgitRefs + "heads/";
+const string fgitHead = fgitDirectory + "HEAD";
 }; // namespace Defaults

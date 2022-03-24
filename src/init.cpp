@@ -25,9 +25,7 @@ bool Init::exists() {
  */
 bool Init::createTree() {
     if (!fs::create_directory(Defaults::fgitDirectory) ||
-        !fs::create_directory(Defaults::fgitObjects) ||
-        !fs::create_directory(Defaults::fgitRefs) ||
-        !fs::create_directory(Defaults::fgitHeads))
+        !fs::create_directory(Defaults::fgitObjects) || !fs::create_directory(Defaults::fgitRefs))
         return false;
 
     return true;
@@ -51,12 +49,11 @@ bool Init::init() {
         return false;
     }
 
-    ofstream head(Defaults::fgitDirectory + "HEAD");
+    ofstream head(Defaults::fgitHead);
     if (head.fail()) {
         cout << "FGit Repository could not be initialised! Aborting..." << endl;
         return false;
     }
-    head << "master";
     head.close();
 
     cout << "FGit Repository initialised successfully!" << endl;

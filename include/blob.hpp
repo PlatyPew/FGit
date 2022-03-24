@@ -18,7 +18,7 @@ class Blob {
     string diff;
 
     string createDiff();
-    string createDiff(string head);
+    string createDiff(string prevId);
 
     friend void toSerial(stringstream& serial, Blob blob);
     friend void fromSerial(stringstream& serial, Blob& blob);

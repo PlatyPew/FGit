@@ -34,8 +34,10 @@ class Commit {
     string getPrevId();
 
     static bool isGenesis();
+    static string getHeadCommit();
     static Commit commit(vector<string> files, string author, string message);
 
+    void readCommit();
     void readCommit(string id);
     void writeCommit();
 

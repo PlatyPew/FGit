@@ -71,6 +71,26 @@ Commit Commit::commit(vector<string> files, string author, string message) {
     return c;
 }
 
+string Commit::getHeadCommit() {
+    if (Commit::isGenesis())
+        return NULL;
+
+    ifstream in(Defaults::fgitHead);
+    stringstream ss;
+    ss << in.rdbuf();
+    return ss.str();
+}
+
+void Commit::readCommit() {
+    if (Commit::isGenesis())
+        return;
+
+    ifstream in;
+    in.open(Defaults::fgitObjects + Commit::getHeadCommit());
+    in >> *this;
+    in.close();
+}
+
 void Commit::readCommit(string id) {
     ifstream in;
     in.open(Defaults::fgitObjects + id);
@@ -79,13 +99,23 @@ void Commit::readCommit(string id) {
 }
 
 void Commit::writeCommit() {
+    if (Commit::getHeadCommit() == this->id)
+        return;
+
     ofstream out;
     out.open(Defaults::fgitObjects + this->getId());
     out << *this;
     out.close();
+
+    out.open(Defaults::fgitHead);
+    out << this->getId();
+    out.close();
 }
 
 void createCommit(Commit& commit) {
+    if (!Commit::isGenesis())
+        commit.prevId = Commit::getHeadCommit();
+
     commit.id = createId(commit);
 }
 
