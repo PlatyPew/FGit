@@ -74,11 +74,12 @@ void createBlob(Blob& blob) {
 
 void toSerial(stringstream& serial, Blob blob) {
     cereal::BinaryOutputArchive oarchive(serial);
-    blob.serialize(oarchive);
+    oarchive(blob);
 }
 
 void fromSerial(stringstream serial, Blob& blob) {
-
+    cereal::BinaryOutputArchive iarchive(serial);
+    iarchive(blob);
 }
 
 ostream& operator<<(ostream& out, const Blob& blob) {

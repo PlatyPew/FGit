@@ -62,8 +62,8 @@ void createCommit(Commit& commit) {
 }
 
 void toSerial(stringstream& serial, Commit commit) {
-    cereal::BinaryOutputArchive archive(serial);
-    archive(commit);
+    cereal::BinaryOutputArchive oarchive(serial);
+    oarchive(commit);
 }
 
 void fromSerial(stringstream serial, Commit& commit) {
