@@ -3,9 +3,15 @@
 #include "blob.hpp"
 #include "defaults.hpp"
 
+#include "cereal/archives/binary.hpp"
+#include "cereal/types/string.hpp"
+#include "cereal/types/vector.hpp"
+#include "sha1.hpp"
+
 #include <filesystem>
+#include <fstream>
 #include <iostream>
-#include <vector>
+#include <sstream>
 
 using namespace std;
 namespace fs = filesystem;
@@ -58,4 +64,13 @@ void Commit::setMessage(string message) {
 
 bool Commit::isGenesis() {
     return fs::is_empty(Defaults::fgitObjects);
+}
+
+stringstream createSerial(Commit commit) {
+    stringstream ss;
+    cereal::BinaryOutputArchive archive(ss);
+
+    archive(commit);
+
+    return ss;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "cereal/access.hpp"
+
 #include <filesystem>
 #include <iostream>
 
@@ -7,6 +9,8 @@ using namespace std;
 namespace fs = filesystem;
 
 class Blob {
+    friend class cereal::access;
+
   private:
     string path;
     string id;

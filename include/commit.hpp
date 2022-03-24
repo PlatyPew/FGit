@@ -2,18 +2,22 @@
 
 #include "blob.hpp"
 
+#include "cereal/access.hpp"
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
 class Commit {
+    friend class cereal::access;
+
   private:
+    string author;
+    string message;
     string commitHash;
     vector<Blob> blobs;
     string prevHash;
-    string author;
-    string message;
 
   public:
     Commit(vector<Blob> blobs, string author, string message);
@@ -32,5 +36,14 @@ class Commit {
 
     static bool isGenesis();
 
-    friend void writeObject(Commit commit);
+    friend stringstream createSerial(Commit commit);
+    friend void writeObject(Commit& commit);
+
+    template <class Archive> void save(Archive& archive) const {
+        archive(author, message, commitHash, blobs, prevHash);
+    }
+
+    template <class Archive> void load(Archive& archive) {
+        archive(author, message, commitHash, blobs, prevHash);
+    }
 };
