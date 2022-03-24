@@ -71,8 +71,18 @@ Commit Commit::commit(vector<string> files, string author, string message) {
     return c;
 }
 
+void Commit::readCommit(string id) {
+    ifstream in;
+    in.open(Defaults::fgitObjects + id);
+    in >> *this;
+    in.close();
+}
+
 void Commit::writeCommit() {
-    cout << this;
+    ofstream out;
+    out.open(Defaults::fgitObjects + this->getId());
+    out << *this;
+    out.close();
 }
 
 void createCommit(Commit& commit) {

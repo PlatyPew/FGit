@@ -36,6 +36,7 @@ class Commit {
     static bool isGenesis();
     static Commit commit(vector<string> files, string author, string message);
 
+    void readCommit(string id);
     void writeCommit();
 
     friend void createCommit(Commit& commit);

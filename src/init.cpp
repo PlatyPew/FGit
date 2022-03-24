@@ -51,7 +51,7 @@ bool Init::init() {
         return false;
     }
 
-    ofstream head(Defaults::fgitDirectory + "/HEAD");
+    ofstream head(Defaults::fgitDirectory + "HEAD");
     if (head.fail()) {
         cout << "FGit Repository could not be initialised! Aborting..." << endl;
         return false;
