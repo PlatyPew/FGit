@@ -15,35 +15,32 @@ class Commit {
   private:
     string author;
     string message;
-    string commitHash;
+    string id;
     vector<Blob> blobs;
-    string prevHash;
+    string prevId;
+
+    friend string createId(Commit commit);
+    friend stringstream createSerial(Commit commit);
 
   public:
     Commit(vector<Blob> blobs, string author, string message);
 
-    string getCommitHash();
-    vector<Blob> getBlobs();
-    string getPrevHash();
     string getAuthor();
     string getMessage();
-
-    void setCommitHash(string commitHash);
-    void setBlobs(vector<Blob> blobs);
-    void setPrevHash(string prevHash);
-    void setAuthor(string author);
-    void setMessage(string message);
+    string getId();
+    vector<Blob> getBlobs();
+    string getPrevId();
 
     static bool isGenesis();
 
-    friend stringstream createSerial(Commit commit);
-    friend void writeObject(Commit& commit);
+    friend void createCommit(Commit& commit);
+    friend ostream& operator<<(ostream& out, const Commit& commit);
 
     template <class Archive> void save(Archive& archive) const {
-        archive(author, message, commitHash, blobs, prevHash);
+        archive(author, message, id, blobs, prevId);
     }
 
     template <class Archive> void load(Archive& archive) {
-        archive(author, message, commitHash, blobs, prevHash);
+        archive(author, message, id, blobs, prevId);
     }
 };

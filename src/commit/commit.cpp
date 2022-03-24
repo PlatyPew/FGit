@@ -22,16 +22,26 @@ Commit::Commit(vector<Blob> blobs, string author, string message) {
     this->message = message;
 }
 
-string Commit::getCommitHash() {
-    return this->commitHash;
+string createId(Commit commit) {
+    // Serialise data
+    stringstream ss = createSerial(commit);
+
+    // Hash serial
+    SHA1 checksum;
+    checksum.update(ss.str());
+    return checksum.final();
+}
+
+string Commit::getId() {
+    return this->id;
 }
 
 vector<Blob> Commit::getBlobs() {
     return this->blobs;
 }
 
-string Commit::getPrevHash() {
-    return this->prevHash;
+string Commit::getPrevId() {
+    return this->prevId;
 }
 
 string Commit::getAuthor() {
@@ -42,28 +52,12 @@ string Commit::getMessage() {
     return this->message;
 }
 
-void Commit::setCommitHash(string commitHash) {
-    this->commitHash = commitHash;
-}
-
-void Commit::setBlobs(vector<Blob> blobs) {
-    this->blobs = blobs;
-}
-
-void Commit::setPrevHash(string prevHash) {
-    this->prevHash = prevHash;
-}
-
-void Commit::setAuthor(string author) {
-    this->author = author;
-}
-
-void Commit::setMessage(string message) {
-    this->message = message;
-}
-
 bool Commit::isGenesis() {
     return fs::is_empty(Defaults::fgitObjects);
+}
+
+void createCommit(Commit& commit) {
+    commit.id = createId(commit);
 }
 
 stringstream createSerial(Commit commit) {
@@ -73,4 +67,9 @@ stringstream createSerial(Commit commit) {
     archive(commit);
 
     return ss;
+}
+
+ostream& operator<<(ostream& out, const Commit& commit) {
+    out << createSerial(commit).str();
+    return out;
 }
