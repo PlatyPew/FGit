@@ -24,7 +24,8 @@ Commit::Commit(vector<Blob> blobs, string author, string message) {
 
 string createId(Commit commit) {
     // Serialise data
-    stringstream ss = createSerial(commit);
+    stringstream ss;
+    toSerial(ss, commit);
 
     // Hash serial
     SHA1 checksum;
@@ -60,16 +61,18 @@ void createCommit(Commit& commit) {
     commit.id = createId(commit);
 }
 
-stringstream createSerial(Commit commit) {
-    stringstream ss;
-    cereal::BinaryOutputArchive archive(ss);
-
+void toSerial(stringstream& serial, Commit commit) {
+    cereal::BinaryOutputArchive archive(serial);
     archive(commit);
+}
 
-    return ss;
+void fromSerial(stringstream serial, Commit& commit) {
+
 }
 
 ostream& operator<<(ostream& out, const Commit& commit) {
-    out << createSerial(commit).str();
+    stringstream ss;
+    toSerial(ss, commit);
+    out << ss.str();
     return out;
 }

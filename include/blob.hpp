@@ -21,7 +21,8 @@ class Blob {
     string createDiff(string head);
 
     friend string createId(Blob blob);
-    friend stringstream createSerial(Blob blob);
+    friend void toSerial(stringstream& serial, Blob blob);
+    friend void fromSerial(stringstream serial, Blob& blob);
 
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff);
@@ -37,4 +38,5 @@ class Blob {
 
     friend void createBlob(Blob& blob);
     friend ostream& operator<<(ostream& out, const Blob& blob);
+    friend istream& operator>>(istream& in, const string blob);
 };
