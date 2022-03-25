@@ -99,9 +99,6 @@ void Commit::readCommit(string id) {
 }
 
 void Commit::writeCommit() {
-    if (Commit::getHeadCommit() == this->id)
-        return;
-
     ofstream out;
     out.open(Defaults::fgitObjects + this->getId());
     out << *this;
@@ -110,6 +107,9 @@ void Commit::writeCommit() {
     out.open(Defaults::fgitHead);
     out << this->getId();
     out.close();
+
+    for (auto const& x : this->getBlobs())
+        fs::copy(x.first, Defaults::fgitCaches + x.first, fs::copy_options::update_existing);
 }
 
 void createCommit(Commit& commit) {

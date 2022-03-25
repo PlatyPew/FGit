@@ -25,7 +25,8 @@ bool Init::exists() {
  */
 bool Init::createTree() {
     if (!fs::create_directory(Defaults::fgitDirectory) ||
-        !fs::create_directory(Defaults::fgitObjects) || !fs::create_directory(Defaults::fgitRefs))
+        !fs::create_directory(Defaults::fgitObjects) || !fs::create_directory(Defaults::fgitRefs) ||
+        !fs::create_directory(Defaults::fgitCaches))
         return false;
 
     return true;
