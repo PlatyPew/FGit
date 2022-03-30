@@ -11,4 +11,5 @@ class Init {
   public:
     static bool exists();
     static bool init();
+    static string getHeadId();
 };

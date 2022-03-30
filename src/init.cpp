@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 namespace fs = filesystem;
@@ -59,4 +60,11 @@ bool Init::init() {
 
     cout << "FGit Repository initialised successfully!" << endl;
     return true;
+}
+
+string Init::getHeadId() {
+    ifstream in(Defaults::fgitHead);
+    stringstream ss;
+    ss << in.rdbuf();
+    return ss.str();
 }

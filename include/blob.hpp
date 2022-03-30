@@ -16,24 +16,25 @@ class Blob {
     string id;
     fs::perms perms;
     string diff;
+    bool deletion;
 
-    string createDiff();
-    string createDiff(string prevId);
+    string createDiff(bool genesis);
 
     friend void toSerial(stringstream& serial, Blob blob);
     friend void fromSerial(stringstream& serial, Blob& blob);
 
     template <class Archive> void serialize(Archive& archive) {
-        archive(path, perms, diff);
+        archive(path, perms, diff, deletion);
     }
 
   public:
     Blob(){};
-    Blob(string path);
+    Blob(string path, bool deletion = false);
 
     string getPath();
     fs::perms getPerms();
     string getDiff();
+    bool getDeletion();
 
     friend ostream& operator<<(ostream& out, const Blob& blob);
     friend istream& operator>>(istream& in, Blob& blob);

@@ -1,6 +1,8 @@
 #include "blob.hpp"
 #include "commit.hpp"
+#include "defaults.hpp"
 #include "diff.hpp"
+#include "init.hpp"
 
 #include "cereal/archives/binary.hpp"
 #include "cereal/types/string.hpp"
@@ -13,31 +15,39 @@
 using namespace std;
 namespace fs = filesystem;
 
-Blob::Blob(string path) {
+Blob::Blob(string path, bool deletion) {
     this->path = path;
     this->perms = fs::status(path).permissions();
-
-    if (Commit::isGenesis())
-        this->diff = createDiff();
+    this->deletion = deletion;
+    this->diff = createDiff(Commit::isGenesis());
 }
 
-/**
- * @brief Creates diff if its te genesis commit
- *
- */
-string Blob::createDiff() {
+string Blob::createDiff(bool genesis) {
     if (!fs::exists(this->path))
         return NULL;
 
-    // Read file and convert to string
-    ifstream file(this->path);
-    ostringstream ss;
-    if (!file)
+    if (this->deletion)
         return NULL;
 
-    ss << file.rdbuf();
+    // Read file and convert to string
+    ifstream fileNew(this->path);
+    stringstream newData;
+    if (!fileNew)
+        return NULL;
 
-    return Diff::diff("", ss.str());
+    newData << fileNew.rdbuf();
+    fileNew.close();
+
+    if (genesis)
+        return Diff::diff("", newData.str());
+
+    // Read old file
+    ifstream fileOld(Defaults::fgitHead + this->path);
+    stringstream oldData;
+    oldData << fileOld.rdbuf();
+    fileOld.close();
+
+    return Diff::diff(oldData.str(), newData.str());
 }
 
 string Blob::getPath() {
@@ -50,6 +60,10 @@ fs::perms Blob::getPerms() {
 
 string Blob::getDiff() {
     return this->diff;
+}
+
+bool Blob::getDeletion() {
+    return this->deletion;
 }
 
 void toSerial(stringstream& serial, Blob blob) {
