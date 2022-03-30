@@ -24,16 +24,16 @@ Blob::Blob(string path, bool deletion) {
 
 string Blob::createDiff(bool genesis) {
     if (!fs::exists(this->path))
-        return NULL;
+        return "";
 
     if (this->deletion)
-        return NULL;
+        return "";
 
     // Read file and convert to string
     ifstream fileNew(this->path);
     stringstream newData;
     if (!fileNew)
-        return NULL;
+        return "";
 
     newData << fileNew.rdbuf();
     fileNew.close();

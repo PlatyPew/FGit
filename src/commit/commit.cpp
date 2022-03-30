@@ -58,10 +58,10 @@ bool Commit::isGenesis() {
     return fs::is_empty(Defaults::fgitObjects);
 };
 
-Commit Commit::commit(vector<string> files, string author, string message) {
+Commit Commit::commit(map<string, bool> files, string author, string message) {
     map<string, Blob> blobs;
-    for (string f : files) {
-        Blob b(f);
+    for (auto const& [f, del] : files) {
+        Blob b(f, del);
         blobs.insert(pair<string, Blob>(f, b));
     }
 
@@ -73,7 +73,7 @@ Commit Commit::commit(vector<string> files, string author, string message) {
 
 string Commit::getHeadCommit() {
     if (Commit::isGenesis())
-        return NULL;
+        return "";
 
     ifstream in(Defaults::fgitHead);
     stringstream ss;
@@ -108,8 +108,12 @@ void Commit::writeCommit() {
     out << this->getId();
     out.close();
 
-    for (auto const& x : this->getBlobs())
-        fs::copy(x.first, Defaults::fgitCaches + x.first, fs::copy_options::update_existing);
+    for (auto const& [path, blob] : this->getBlobs()) {
+        if (((Blob)blob).getDeletion())
+            fs::remove(Defaults::fgitCaches + path);
+        else
+            fs::copy(path, Defaults::fgitCaches + path, fs::copy_options::update_existing);
+    }
 }
 
 void createCommit(Commit& commit) {
