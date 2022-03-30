@@ -99,6 +99,7 @@ void Commit::readCommit(string id) {
 }
 
 void Commit::writeCommit() {
+    // If it is root commit
     ofstream out;
     out.open(Defaults::fgitObjects + this->getId());
     out << *this;

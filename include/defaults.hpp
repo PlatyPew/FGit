@@ -9,5 +9,5 @@ const string fgitDirectory = ".fgit/";
 const string fgitObjects = fgitDirectory + "objects/";
 const string fgitRefs = fgitDirectory + "refs/";
 const string fgitCaches = fgitDirectory + "caches/";
-const string fgitHead = fgitDirectory + "HEAD";
+const string fgitHead = fgitRefs + "HEAD";
 }; // namespace Defaults

@@ -17,7 +17,7 @@ class Commit {
     string message;
     string id;
     map<string, Blob> blobs;
-    string prevId;
+    string prevId = "";
 
     friend string createId(Commit commit);
     friend void toSerial(stringstream& serial, Commit commit);
