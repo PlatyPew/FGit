@@ -23,7 +23,7 @@ void Add::add(string fileName){
     if (isStageable)
         this->staged.addToStaged(fileName, isDelete, isBinary);
     else {
-        cout << "Nothing to be staged"
+        cout << "Nothing to be staged";
     }
 }
 
