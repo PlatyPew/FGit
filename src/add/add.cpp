@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 
-
 using namespace std;
 
 void Add::add(){
@@ -14,12 +13,18 @@ void Add::add(){
 void Add::add(string fileName){
     cout << "constructor with filename " << fileName << endl;
 
-    bool isDelete = 0;
-    bool isBinary = 0;
-
-    // TODO: Add git status code here , get values for isDelete and isBinary
+    bool isDelete = false;
+    bool isBinary = false;
+    bool isStageable = false;
     
-    this->staged.addToStaged(fileName, isDelete, isBinary);
+    // TODO: Add git status code here , get values for isDelete and isBinary
+    // TODO: Implement Daryl's helper function for the isStageable
+    
+    if (isStageable)
+        this->staged.addToStaged(fileName, isDelete, isBinary);
+    else {
+        cout << "Nothing to be staged"
+    }
 }
 
 Staged::Staged(){
