@@ -19,7 +19,9 @@ class Commit {
     map<string, Blob> blobs;
     string prevId = "";
 
-    friend string createId(Commit commit);
+    void createCommit();
+    string createId();
+
     friend void toSerial(stringstream& serial, Commit commit);
     friend void fromSerial(stringstream& serial, Commit& commit);
 
@@ -41,7 +43,6 @@ class Commit {
     void readCommit(string id);
     void writeCommit();
 
-    friend void createCommit(Commit& commit);
     friend ostream& operator<<(ostream& out, const Commit& commit);
     friend istream& operator>>(istream& in, Commit& commit);
 

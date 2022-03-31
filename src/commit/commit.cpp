@@ -23,10 +23,10 @@ Commit::Commit(map<string, Blob> blobs, string author, string message) {
     this->message = message;
 }
 
-string createId(Commit commit) {
+string Commit::createId() {
     // Serialise data
     stringstream ss;
-    toSerial(ss, commit);
+    toSerial(ss, *this);
 
     // Hash serial
     SHA1 checksum;
@@ -66,7 +66,7 @@ Commit Commit::commit(map<string, bool> files, string author, string message) {
     }
 
     Commit c(blobs, author, message);
-    createCommit(c);
+    c.createCommit();
 
     return c;
 }
@@ -117,11 +117,9 @@ void Commit::writeCommit() {
     }
 }
 
-void createCommit(Commit& commit) {
-    if (!Commit::isGenesis())
-        commit.prevId = Commit::getHeadCommit();
-
-    commit.id = createId(commit);
+void Commit::createCommit() {
+    this->prevId = Commit::getHeadCommit();
+    this->id = this->createId();
 }
 
 void toSerial(stringstream& serial, Commit commit) {
