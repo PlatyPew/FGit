@@ -26,6 +26,5 @@ void Log::log(string id) {
         in >> c;
         in.close();
         Log::print(c);
-        id = c.getPrevId();
-    } while (id != "");
+    } while ((id = c.getPrevId()) != "");
 }

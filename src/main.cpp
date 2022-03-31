@@ -18,8 +18,10 @@ void runSubCmd(string subCmd) {
     }
 
     // Check if .fgit exists
-    if (!Init::exists())
+    if (!Init::exists()) {
+        cout << "FGit Repository has not been initialised! Aborting..." << endl;
         return;
+    }
 
     if (subCmd == "log")
         Log::log();
