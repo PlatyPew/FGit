@@ -37,7 +37,7 @@ class Commit {
 
     static bool isGenesis();
     static string getHeadCommit();
-    static Commit commit(map<string, bool> files, string author, string message);
+    static Commit commit(map<string, pair<bool, bool>> files, string author, string message);
 
     void readCommit();
     void readCommit(string id);

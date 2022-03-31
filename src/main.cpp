@@ -2,6 +2,7 @@
 #include "init.hpp"
 #include "log.hpp"
 
+#include "bin.hpp"
 #include "blob.hpp"
 #include "commit.hpp"
 #include "log.hpp"

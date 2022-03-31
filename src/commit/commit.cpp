@@ -1,5 +1,6 @@
 #include "commit.hpp"
 
+#include "bin.hpp"
 #include "blob.hpp"
 #include "defaults.hpp"
 
@@ -58,11 +59,17 @@ bool Commit::isGenesis() {
     return fs::is_empty(Defaults::fgitObjects);
 };
 
-Commit Commit::commit(map<string, bool> files, string author, string message) {
+Commit Commit::commit(map<string, pair<bool, bool>> files, string author, string message) {
     map<string, Blob> blobs;
-    for (auto const& [f, del] : files) {
-        Blob b(f, del);
-        blobs.insert(pair<string, Blob>(f, b));
+    for (auto const& [f, attr] : files) {
+        // If it is a binary file
+        if (attr.second) {
+            Bin b(f, attr.first);
+            blobs.insert(pair<string, Blob>(f, (Blob)b));
+        } else {
+            Blob b(f, attr.first);
+            blobs.insert(pair<string, Blob>(f, b));
+        }
     }
 
     Commit c(blobs, author, message);

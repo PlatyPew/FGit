@@ -12,12 +12,6 @@ class Blob {
     friend class cereal::access;
 
   private:
-    string path;
-    string id;
-    fs::perms perms;
-    string diff;
-    bool deletion;
-
     string createDiff(bool genesis);
 
     friend void toSerial(stringstream& serial, Blob blob);
@@ -26,6 +20,13 @@ class Blob {
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff, deletion);
     }
+
+  protected:
+    string path;
+    string id;
+    fs::perms perms;
+    string diff;
+    bool deletion;
 
   public:
     Blob(){};
