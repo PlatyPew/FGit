@@ -13,23 +13,25 @@ void Add::add(){
 
 void Add::add(string fileName){
     cout << "constructor with filename " << fileName << endl;
-    this->staged.addToStaged(fileName);
+
+    bool isDelete = 0;
+    bool isBinary = 0;
+
+    // TODO: Add git status code here , get values for isDelete and isBinary
+    
+    this->staged.addToStaged(fileName, isDelete, isBinary);
 }
 
 Staged::Staged(){
-    this->stagedFile = "sample.txt";
+    this->stagedFile = "staged";
 }
 
-Staged::Staged(string stagedFile){
-    this->stagedFile = stagedFile;
-}
-
-void Staged::addToStaged(string fileName){
+void Staged::addToStaged(string fileName, bool isDelete, bool isBinary){
     ofstream fout;
     this->paths.push_back(fileName);
     
     fout.open(this->stagedFile, ios::app);
-    fout << fileName << endl;
+    fout << fileName << "," << isDelete << "," << isBinary << endl;
     fout.close();
 
     this->printStaged();

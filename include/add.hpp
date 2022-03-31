@@ -11,11 +11,9 @@ class Staged {
         string stagedFile;
     public:
         Staged();
-        Staged(string stagedFile);
-        void addToStaged(string fileName);
+        void addToStaged(string fileName, bool isDelete, bool isBinary);
         void printStaged();
 };
-
 
 class Add {
     private:
