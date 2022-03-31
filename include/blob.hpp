@@ -23,7 +23,6 @@ class Blob {
 
   protected:
     string path;
-    string id;
     fs::perms perms;
     string diff;
     bool deletion;
