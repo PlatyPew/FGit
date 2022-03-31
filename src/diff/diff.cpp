@@ -15,3 +15,7 @@ string Diff::patch(string patch, string curr) {
     diff_match_patch<string> dmp;
     return dmp.patch_apply(dmp.patch_fromText(patch), curr).first;
 }
+
+bool Diff::isDiff(string prev, string curr) {
+     return Diff::diff(prev, curr) == "";
+}
