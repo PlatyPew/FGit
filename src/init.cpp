@@ -61,10 +61,3 @@ bool Init::init() {
     cout << "FGit Repository initialised successfully!" << endl;
     return true;
 }
-
-string Init::getHeadId() {
-    ifstream in(Defaults::fgitHead);
-    stringstream ss;
-    ss << in.rdbuf();
-    return ss.str();
-}
