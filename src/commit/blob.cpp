@@ -66,6 +66,10 @@ bool Blob::getDeletion() {
     return this->deletion;
 }
 
+string Blob::getContents(string prevContents) {
+    return Diff::patch(this->diff, prevContents);
+}
+
 void toSerial(stringstream& serial, Blob blob) {
     cereal::BinaryOutputArchive oarchive(serial);
     oarchive(blob);

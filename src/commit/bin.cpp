@@ -34,7 +34,11 @@ string Bin::createDiff(bool genesis) {
     newData << fileNew.rdbuf();
     fileNew.close();
 
-    return Diff::diff("", newData.str());
+    return newData.str();
+}
+
+string Bin::getContents() {
+    return this->getDiff();
 }
 
 ostream& operator<<(ostream& out, const Bin& blob) {

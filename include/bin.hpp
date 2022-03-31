@@ -18,6 +18,8 @@ class Bin : public Blob {
     Bin(){};
     Bin(string path, bool deletion = false);
 
+    string getContents();
+
     friend ostream& operator<<(ostream& out, const Blob& blob);
     friend istream& operator>>(istream& in, Blob& blob);
 };

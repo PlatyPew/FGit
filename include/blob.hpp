@@ -35,6 +35,7 @@ class Blob {
     fs::perms getPerms();
     string getDiff();
     bool getDeletion();
+    string getContents(string prevContents);
 
     friend ostream& operator<<(ostream& out, const Blob& blob);
     friend istream& operator>>(istream& in, Blob& blob);
