@@ -13,9 +13,6 @@ class Blob {
   private:
     std::string createDiff(bool genesis);
 
-    friend void toSerial(std::stringstream& serial, Blob blob);
-    friend void fromSerial(std::stringstream& serial, Blob& blob);
-
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff, deletion);
     }
@@ -35,7 +32,4 @@ class Blob {
     std::string getDiff();
     bool getDeletion();
     std::string getContents(std::string prevContents);
-
-    friend std::ostream& operator<<(std::ostream& out, const Blob& blob);
-    friend std::istream& operator>>(std::istream& in, Blob& blob);
 };

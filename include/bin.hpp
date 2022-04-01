@@ -20,7 +20,4 @@ class Bin : public Blob {
     Bin(std::string path, bool deletion = false);
 
     std::string getContents();
-
-    friend std::ostream& operator<<(std::ostream& out, const Blob& blob);
-    friend std::istream& operator>>(std::istream& in, Blob& blob);
 };

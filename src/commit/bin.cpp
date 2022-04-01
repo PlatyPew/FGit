@@ -18,6 +18,12 @@ Bin::Bin(string path, bool deletion) {
     this->diff = createDiff(Commit::isGenesis());
 }
 
+/**
+ * @brief stores the binary file
+ *
+ * @param genesis: if there are any commits prior
+ * @return binary file
+ */
 string Bin::createDiff(bool genesis) {
     if (!fs::exists(this->path))
         return "";
@@ -37,20 +43,11 @@ string Bin::createDiff(bool genesis) {
     return newData.str();
 }
 
+/**
+ * @brief get contents of the binary
+ *
+ * @return contenst of binary file
+ */
 string Bin::getContents() {
     return this->getDiff();
-}
-
-ostream& operator<<(ostream& out, const Bin& blob) {
-    stringstream ss;
-    toSerial(ss, blob);
-    out << ss.str();
-    return out;
-}
-
-istream& operator>>(istream& in, Bin& blob) {
-    stringstream ss;
-    ss << in.rdbuf();
-    fromSerial(ss, blob);
-    return in;
 }
