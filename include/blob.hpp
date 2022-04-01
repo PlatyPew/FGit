@@ -3,40 +3,39 @@
 #include "cereal/access.hpp"
 
 #include <filesystem>
-#include <iostream>
+#include <string>
 
-using namespace std;
-namespace fs = filesystem;
+namespace fs = std::filesystem;
 
 class Blob {
     friend class cereal::access;
 
   private:
-    string createDiff(bool genesis);
+    std::string createDiff(bool genesis);
 
-    friend void toSerial(stringstream& serial, Blob blob);
-    friend void fromSerial(stringstream& serial, Blob& blob);
+    friend void toSerial(std::stringstream& serial, Blob blob);
+    friend void fromSerial(std::stringstream& serial, Blob& blob);
 
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff, deletion);
     }
 
   protected:
-    string path;
+    std::string path;
     fs::perms perms;
-    string diff;
+    std::string diff;
     bool deletion;
 
   public:
     Blob(){};
-    Blob(string path, bool deletion = false);
+    Blob(std::string path, bool deletion = false);
 
-    string getPath();
+    std::string getPath();
     fs::perms getPerms();
-    string getDiff();
+    std::string getDiff();
     bool getDeletion();
-    string getContents(string prevContents);
+    std::string getContents(std::string prevContents);
 
-    friend ostream& operator<<(ostream& out, const Blob& blob);
-    friend istream& operator>>(istream& in, Blob& blob);
+    friend std::ostream& operator<<(std::ostream& out, const Blob& blob);
+    friend std::istream& operator>>(std::istream& in, Blob& blob);
 };

@@ -12,8 +12,8 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-namespace fs = filesystem;
+using std::ifstream, std::istream, std::ostream, std::string, std::stringstream;
+namespace fs = std::filesystem;
 
 Blob::Blob(string path, bool deletion) {
     this->path = path;

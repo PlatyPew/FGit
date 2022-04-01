@@ -1,14 +1,12 @@
 #include "init.hpp"
-
 #include "defaults.hpp"
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 
-using namespace std;
-namespace fs = filesystem;
+using std::cout, std::endl, std::ofstream;
+namespace fs = std::filesystem;
 
 /**
  * @brief Checks if directory already exists

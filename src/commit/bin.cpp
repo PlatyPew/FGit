@@ -8,8 +8,8 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-namespace fs = filesystem;
+using std::ifstream, std::istream, std::ostream, std::string, std::stringstream;
+namespace fs = std::filesystem;
 
 Bin::Bin(string path, bool deletion) {
     this->path = path;
@@ -26,7 +26,7 @@ string Bin::createDiff(bool genesis) {
         return "";
 
     // Read file and convert to string
-    ifstream fileNew(this->path, ios::binary);
+    ifstream fileNew(this->path, std::ios::binary);
     stringstream newData;
     if (!fileNew)
         return "";
