@@ -2,6 +2,7 @@
 
 #include "bin.hpp"
 #include "blob.hpp"
+#include "compress.hpp"
 #include "defaults.hpp"
 
 #include "cereal/archives/binary.hpp"
@@ -142,13 +143,15 @@ void fromSerial(stringstream& serial, Commit& commit) {
 ostream& operator<<(ostream& out, const Commit& commit) {
     stringstream ss;
     toSerial(ss, commit);
-    out << ss.str();
+    out << Compress::compress(ss.str());
     return out;
 }
 
 istream& operator>>(istream& in, Commit& commit) {
     stringstream ss;
     ss << in.rdbuf();
-    fromSerial(ss, commit);
+    stringstream sss;
+    sss << Compress::decompress(ss.str());
+    fromSerial(sss, commit);
     return in;
 }
