@@ -12,6 +12,6 @@ set(GZIP "${PROJECT_SOURCE_DIR}/lib/gzip/include")
 include_directories(${DMP} ${SHA1} ${CEREAL} ${GZIP})
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
-add_executable(${PROJECT} src/main.cpp src/init.cpp src/utils/diff.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp src/commit/bin.cpp src/add/add.cpp)
+add_executable(${PROJECT} src/main.cpp src/init.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp src/commit/bin.cpp src/add/add.cpp)
 
 target_precompile_headers(${PROJECT} PRIVATE "${DMP}/diff_match_patch.h" "${SHA1}/sha1.hpp")
