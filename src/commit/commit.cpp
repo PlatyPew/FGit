@@ -1,5 +1,4 @@
 #include "commit.hpp"
-
 #include "bin.hpp"
 #include "blob.hpp"
 #include "compress.hpp"
@@ -16,8 +15,9 @@
 #include <map>
 #include <sstream>
 
-using namespace std;
-namespace fs = filesystem;
+using std::ifstream, std::istream, std::map, std::ofstream, std::ostream, std::pair, std::string,
+    std::stringstream;
+namespace fs = std::filesystem;
 
 Commit::Commit(map<string, Blob> blobs, string author, string message) {
     this->blobs = blobs;

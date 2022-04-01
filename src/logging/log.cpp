@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
+using std::cout, std::endl, std::ifstream, std::string;
 
 void Log::print(Commit commit) {
     cout << "commit: " << commit.getId() << endl;

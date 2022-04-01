@@ -4,47 +4,46 @@
 
 #include "cereal/access.hpp"
 
-#include <iostream>
 #include <map>
-
-using namespace std;
+#include <string>
 
 class Commit {
     friend class cereal::access;
 
   private:
-    string author;
-    string message;
-    string id;
-    map<string, Blob> blobs;
-    string prevId = "";
+    std::string author;
+    std::string message;
+    std::string id;
+    std::map<std::string, Blob> blobs;
+    std::string prevId = "";
 
     void createCommit();
-    string createId();
+    std::string createId();
 
-    friend void toSerial(stringstream& serial, Commit commit);
-    friend void fromSerial(stringstream& serial, Commit& commit);
+    friend void toSerial(std::stringstream& serial, Commit commit);
+    friend void fromSerial(std::stringstream& serial, Commit& commit);
 
   public:
     Commit(){};
-    Commit(map<string, Blob> blobs, string author, string message);
+    Commit(std::map<std::string, Blob> blobs, std::string author, std::string message);
 
-    string getAuthor();
-    string getMessage();
-    string getId();
-    map<string, Blob> getBlobs();
-    string getPrevId();
+    std::string getAuthor();
+    std::string getMessage();
+    std::string getId();
+    std::map<std::string, Blob> getBlobs();
+    std::string getPrevId();
 
     static bool isGenesis();
-    static string getHeadCommit();
-    static Commit commit(map<string, pair<bool, bool>> files, string author, string message);
+    static std::string getHeadCommit();
+    static Commit commit(std::map<std::string, std::pair<bool, bool>> files, std::string author,
+                         std::string message);
 
     void readCommit();
-    void readCommit(string id);
+    void readCommit(std::string id);
     void writeCommit();
 
-    friend ostream& operator<<(ostream& out, const Commit& commit);
-    friend istream& operator>>(istream& in, Commit& commit);
+    friend std::ostream& operator<<(std::ostream& out, const Commit& commit);
+    friend std::istream& operator>>(std::istream& in, Commit& commit);
 
     template <class Archive> void save(Archive& archive) const {
         archive(author, message, id, blobs, prevId);

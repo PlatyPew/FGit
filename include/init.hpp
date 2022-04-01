@@ -1,9 +1,5 @@
 #pragma once
 
-#include <iostream>
-
-using std::string;
-
 class Init {
   private:
     static bool createTree();
