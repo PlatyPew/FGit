@@ -11,6 +11,8 @@ set(GZIP "${PROJECT_SOURCE_DIR}/lib/gzip/include")
 
 include_directories(${DMP} ${SHA1} ${CEREAL} ${GZIP})
 
+add_link_options("-lz")
+
 include_directories("${PROJECT_SOURCE_DIR}/include")
 add_executable(${PROJECT} src/main.cpp src/init.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp src/commit/bin.cpp src/add/add.cpp)
 

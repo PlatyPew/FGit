@@ -6,6 +6,7 @@
 #include "blob.hpp"
 #include "commit.hpp"
 #include "add.hpp"
+#include "compress.hpp"
 
 #include <iostream>
 #include <vector>
