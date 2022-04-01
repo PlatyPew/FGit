@@ -10,3 +10,6 @@
 [submodule "lib/cereal"]
 	path = lib/cereal
 	url = https://github.com/USCiLab/cereal.git
+[submodule "lib/gzip"]
+	path = lib/gzip
+	url = https://github.com/mapbox/gzip-hpp.git
