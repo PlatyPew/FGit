@@ -22,6 +22,12 @@ Blob::Blob(string path, bool deletion) {
     this->diff = createDiff(Commit::isGenesis());
 }
 
+/**
+ * @brief creates the diff between the previous state and current state
+ *
+ * @param genesis: if the commit is the first commit
+ * @return unidiff patch format
+ */
 string Blob::createDiff(bool genesis) {
     if (!fs::exists(this->path))
         return "";
@@ -50,46 +56,48 @@ string Blob::createDiff(bool genesis) {
     return Diff::diff(oldData.str(), newData.str());
 }
 
+/**
+ * @brief getter for the path of the file
+ *
+ * @return path of the file
+ */
 string Blob::getPath() {
     return this->path;
 }
 
+/**
+ * @brief getter for the permissions of the file
+ *
+ * @return permissions of the file
+ */
 fs::perms Blob::getPerms() {
     return this->perms;
 }
 
+/**
+ * @brief getter for the unidiff patch
+ *
+ * @return unidiff patch
+ */
 string Blob::getDiff() {
     return this->diff;
 }
 
+/**
+ * @brief getter if the file is to be deleted
+ *
+ * @return true if file is deleted
+ */
 bool Blob::getDeletion() {
     return this->deletion;
 }
 
+/**
+ * @brief applies the patch
+ *
+ * @param prevContents: contents of the previous file
+ * @return patched contents
+ */
 string Blob::getContents(string prevContents) {
     return Diff::patch(this->diff, prevContents);
-}
-
-void toSerial(stringstream& serial, Blob blob) {
-    cereal::BinaryOutputArchive oarchive(serial);
-    oarchive(blob);
-}
-
-void fromSerial(stringstream& serial, Blob& blob) {
-    cereal::BinaryInputArchive iarchive(serial);
-    iarchive(blob);
-}
-
-ostream& operator<<(ostream& out, const Blob& blob) {
-    stringstream ss;
-    toSerial(ss, blob);
-    out << ss.str();
-    return out;
-}
-
-istream& operator>>(istream& in, Blob& blob) {
-    stringstream ss;
-    ss << in.rdbuf();
-    fromSerial(ss, blob);
-    return in;
 }
