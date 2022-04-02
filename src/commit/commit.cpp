@@ -25,9 +25,8 @@ Commit::Commit(map<string, Blob> blobs, string author, string message) {
     this->author = author;
     this->message = message;
     time_t now = time(0);
-    char* timestamp = ctime(&now);
-    timestamp[strlen(timestamp) - 1] = '\0';
-    this->timestamp = timestamp;
+    this->timestamp = ctime(&now);
+    this->timestamp.pop_back();
 }
 
 /**
