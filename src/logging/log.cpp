@@ -18,6 +18,9 @@ void Log::log() {
 }
 
 void Log::log(string id) {
+    if (Commit::isGenesis())
+        return;
+
     Commit c;
     ifstream in;
 
