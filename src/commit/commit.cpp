@@ -17,7 +17,7 @@
 #include <sstream>
 
 using std::ifstream, std::istream, std::map, std::ofstream, std::ostream, std::pair, std::string,
-    std::stringstream;
+    std::stringstream, std::cout, std::endl;
 namespace fs = std::filesystem;
 
 Commit::Commit(map<string, Blob> blobs, string author, string message) {
@@ -131,6 +131,8 @@ Commit Commit::commit(map<string, pair<bool, bool>> files, string author, string
 
     Commit c(blobs, author, message);
     c.createCommit();
+
+    cout << "Commit " << c.getId() << " created!" << endl;
 
     return c;
 }
