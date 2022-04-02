@@ -9,6 +9,7 @@
 #include "cereal/types/string.hpp"
 #include "sha1.hpp"
 
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -23,6 +24,10 @@ Commit::Commit(map<string, Blob> blobs, string author, string message) {
     this->blobs = blobs;
     this->author = author;
     this->message = message;
+    time_t now = time(0);
+    char* timestamp = ctime(&now);
+    timestamp[strlen(timestamp) - 1] = '\0';
+    this->timestamp = timestamp;
 }
 
 /**
@@ -84,6 +89,15 @@ string Commit::getAuthor() {
  */
 string Commit::getMessage() {
     return this->message;
+}
+
+/**
+ * @brief gets local timestamp of the commit
+ *
+ * @return timestamp of the commit
+ */
+string Commit::getTimestamp() {
+    return this->timestamp;
 }
 
 /**

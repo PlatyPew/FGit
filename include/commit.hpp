@@ -16,6 +16,7 @@ class Commit {
     std::string id;
     std::map<std::string, Blob> blobs;
     std::string prevId = "";
+    std::string timestamp;
 
     void createCommit();
     std::string createId();
@@ -32,6 +33,7 @@ class Commit {
     std::string getId();
     std::map<std::string, Blob> getBlobs();
     std::string getPrevId();
+    std::string getTimestamp();
 
     static bool isGenesis();
     static std::string getHeadCommit();
@@ -46,10 +48,10 @@ class Commit {
     friend std::istream& operator>>(std::istream& in, Commit& commit);
 
     template <class Archive> void save(Archive& archive) const {
-        archive(author, message, id, blobs, prevId);
+        archive(author, message, id, blobs, prevId, timestamp);
     }
 
     template <class Archive> void load(Archive& archive) {
-        archive(author, message, id, blobs, prevId);
+        archive(author, message, id, blobs, prevId, timestamp);
     }
 };

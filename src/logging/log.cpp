@@ -8,9 +8,13 @@
 using std::cout, std::endl, std::ifstream, std::string;
 
 void Log::print(Commit commit) {
-    cout << "commit: " << commit.getId() << endl;
+    cout << "Commit: " << commit.getId() << endl;
+    cout << "Timestamp: " << commit.getTimestamp() << endl;
     cout << "Author: " << commit.getAuthor() << endl;
     cout << "Message: " << commit.getMessage() << endl;
+
+    if (commit.getPrevId() != "")
+        cout << endl;
 }
 
 void Log::log() {
