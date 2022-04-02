@@ -19,5 +19,5 @@ class Bin : public Blob {
     Bin(){};
     Bin(std::string path, bool deletion = false);
 
-    std::string getContents();
+    std::string getContents(std::string prevContents = "");
 };

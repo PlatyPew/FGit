@@ -93,6 +93,15 @@ bool Blob::getDeletion() {
 }
 
 /**
+ * @brief getter if file is binary type
+ *
+ * @return true if binary
+ */
+bool Blob::getBinary() {
+    return this->binary;
+}
+
+/**
  * @brief applies the patch
  *
  * @param prevContents: contents of the previous file
