@@ -152,6 +152,11 @@ string Commit::getHeadCommit() {
     return ss.str();
 }
 
+/**
+ * @brief gets the commit id of where the LATEST is
+ *
+ * @return commit id of LATEST
+ */
 string Commit::getLatestCommit() {
     if (Commit::isGenesis())
         return "";

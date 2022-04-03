@@ -19,6 +19,11 @@ Reset::Reset(string path, stack<Blob> blobs) {
     this->patchContents(blobs);
 }
 
+/**
+ * @brief patches contents
+ *
+ * @param blobs: a stack of blobs in commit order
+ */
 void Reset::patchContents(stack<Blob> blobs) {
     while (!blobs.empty()) {
         Blob b = blobs.top();
@@ -38,6 +43,10 @@ void Reset::patchContents(stack<Blob> blobs) {
     }
 }
 
+/**
+ * @brief write to cache and working directory
+ *
+ */
 void Reset::writeFiles() {
     if (this->deletion)
         return;
@@ -53,6 +62,10 @@ void Reset::writeFiles() {
     fs::copy(Defaults::fgitCaches + this->path, this->path, fs::copy_options::update_existing);
 }
 
+/**
+ * @brief delete files from cache and working directory
+ *
+ */
 void Reset::clearFiles() {
     vector<string> filesClear;
     for (const auto& entry : fs::directory_iterator(Defaults::fgitCaches)) {
@@ -67,14 +80,29 @@ void Reset::clearFiles() {
     }
 }
 
+/**
+ * @brief getter for paths
+ *
+ * @return path of blob
+ */
 string Reset::getPath() {
     return this->path;
 }
 
+/**
+ * @brief getter for contents
+ *
+ * @return patched contents
+ */
 string Reset::getContents() {
     return this->contents;
 }
 
+/**
+ * @brief reset the contents
+ *
+ * @param id: reset by id
+ */
 void Reset::reset(string id) {
     // Clear all files in working directory and cache
     Reset::clearFiles();
