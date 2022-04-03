@@ -114,6 +114,8 @@ void Reset::reset(string id) {
     out << id;
     out.close();
 
+    string resetId = id;
+
     // Calculate patches
     map<string, stack<Blob>> commits;
     Commit c;
@@ -141,5 +143,5 @@ void Reset::reset(string id) {
         r.writeFiles();
     }
 
-    cout << "Resetted to commit " << id << endl;
+    cout << "Resetted to commit " << resetId << endl;
 }
