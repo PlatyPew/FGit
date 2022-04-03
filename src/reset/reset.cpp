@@ -34,7 +34,7 @@ void Reset::patchContents(stack<Blob> blobs) {
             this->contents = "";
             this->deletion = true;
         } else if (b.getBinary()) { // Handles file if it's binary or not
-            Bin* bi = (Bin*)(&b);
+            Bin* bi = static_cast<Bin*>(&b);
             this->contents = bi->getContents();
             this->deletion = false;
         } else { // Patch if it's normal text file
