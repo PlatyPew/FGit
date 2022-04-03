@@ -1,6 +1,7 @@
 #pragma once
 
 #include "diff_match_patch.h"
+#include "sha1.hpp"
 
 #include <string>
 
@@ -40,6 +41,9 @@ class Diff {
      * @return true if there is a difference
      */
     static bool isDiff(std::string prev, std::string curr) {
-        return Diff::diff(prev, curr) != "";
+        SHA1 checksum1, checksum2;
+        checksum1.update(prev);
+        checksum2.update(curr);
+        return checksum1.final() != checksum2.final();
     }
 };
