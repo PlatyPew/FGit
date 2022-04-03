@@ -11,7 +11,8 @@
 #include <stack>
 #include <string>
 
-using std::map, std::stack, std::string, std::pair, std::vector, std::ofstream;
+using std::map, std::stack, std::string, std::pair, std::vector, std::ofstream, std::cout,
+    std::endl;
 namespace fs = std::filesystem;
 
 Reset::Reset(string path, stack<Blob> blobs) {
@@ -139,4 +140,6 @@ void Reset::reset(string id) {
         Reset r(path, blobby);
         r.writeFiles();
     }
+
+    cout << "Resetted to commit " << id << endl;
 }
