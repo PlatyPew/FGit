@@ -7,6 +7,11 @@
 
 using std::cout, std::endl, std::ifstream, std::string;
 
+/**
+ * @brief prints out commit log
+ *
+ * @param commit: commit to read from
+ */
 void Log::print(Commit commit) {
     cout << "Commit: " << commit.getId();
 
@@ -22,10 +27,19 @@ void Log::print(Commit commit) {
         cout << endl;
 }
 
+/**
+ * @brief get commit log from latest
+ *
+ */
 void Log::log() {
     Log::log(Commit::getLatestCommit());
 }
 
+/**
+ * @brief get commit log from commit id
+ *
+ * @param id: commit id
+ */
 void Log::log(string id) {
     if (Commit::isGenesis())
         return;
