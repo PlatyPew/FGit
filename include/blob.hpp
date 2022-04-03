@@ -33,5 +33,5 @@ class Blob {
     std::string getDiff();
     bool getDeletion();
     bool getBinary();
-    virtual std::string getContents(std::string prevContents);
+    std::string getContents(std::string prevContents);
 };

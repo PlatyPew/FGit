@@ -49,6 +49,6 @@ string Bin::createDiff(bool genesis) {
  *
  * @return contenst of binary file
  */
-string Bin::getContents(std::string prevContents) {
+string Bin::getContents() {
     return this->getDiff();
 }
