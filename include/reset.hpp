@@ -9,8 +9,12 @@ class Reset {
   private:
     std::string path;
     std::string contents = "";
+    bool deletion = false;
 
     void patchContents(std::stack<Blob> blobs);
+    void writeFiles();
+
+    static void clearFiles();
 
   public:
     Reset(std::string path, std::stack<Blob> blobs);

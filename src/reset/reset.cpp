@@ -2,13 +2,17 @@
 #include "bin.hpp"
 #include "blob.hpp"
 #include "commit.hpp"
+#include "defaults.hpp"
 #include "diff.hpp"
 
+#include <filesystem>
+#include <fstream>
 #include <map>
 #include <stack>
 #include <string>
 
-using std::map, std::stack, std::string, std::pair;
+using std::map, std::stack, std::string, std::pair, std::vector, std::ofstream;
+namespace fs = std::filesystem;
 
 Reset::Reset(string path, stack<Blob> blobs) {
     this->path = path;
@@ -22,12 +26,44 @@ void Reset::patchContents(stack<Blob> blobs) {
 
         if (b.getDeletion()) { // Checks if file has been deleted
             this->contents = "";
+            this->deletion = true;
         } else if (b.getBinary()) { // Handles file if it's binary or not
             Bin* bi = (Bin*)(&b);
             this->contents = bi->getContents();
+            this->deletion = false;
         } else { // Patch if it's normal text file
             this->contents = b.getContents(this->contents);
+            this->deletion = false;
         }
+    }
+}
+
+void Reset::writeFiles() {
+    if (this->deletion)
+        return;
+
+    ofstream out;
+    out.open(Defaults::fgitCaches + this->path);
+    if (!out)
+        return;
+
+    out << this->contents;
+    out.close();
+
+    fs::copy(Defaults::fgitCaches + this->path, this->path, fs::copy_options::update_existing);
+}
+
+void Reset::clearFiles() {
+    vector<string> filesClear;
+    for (const auto& entry : fs::directory_iterator(Defaults::fgitCaches)) {
+        string f = entry.path();
+        f = f.substr(Defaults::fgitCaches.size());
+        filesClear.push_back(f);
+    }
+
+    for (string f : filesClear) {
+        fs::remove(Defaults::fgitCaches + f);
+        fs::remove(f);
     }
 }
 
@@ -40,6 +76,16 @@ string Reset::getContents() {
 }
 
 void Reset::reset(string id) {
+    // Clear all files in working directory and cache
+    Reset::clearFiles();
+
+    // Update HEAD file
+    ofstream out;
+    out.open(Defaults::fgitHead);
+    out << id;
+    out.close();
+
+    // Calculate patches
     map<string, stack<Blob>> commits;
     Commit c;
     do {
@@ -60,7 +106,9 @@ void Reset::reset(string id) {
         }
     } while ((id = c.getPrevId()) != "");
 
+    // Patch contents and output to file
     for (auto const& [path, blobby] : commits) { // I have completely given up on variable names
         Reset r(path, blobby);
+        r.writeFiles();
     }
 }
