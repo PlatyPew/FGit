@@ -8,7 +8,12 @@
 using std::cout, std::endl, std::ifstream, std::string;
 
 void Log::print(Commit commit) {
-    cout << "Commit: " << commit.getId() << endl;
+    cout << "Commit: " << commit.getId();
+
+    if (commit.getId() == Commit::getHeadCommit())
+        cout << " <--- HEAD";
+    cout << endl;
+
     cout << "Timestamp: " << commit.getTimestamp() << endl;
     cout << "Author: " << commit.getAuthor() << endl;
     cout << "Message: " << commit.getMessage() << endl;
@@ -18,7 +23,7 @@ void Log::print(Commit commit) {
 }
 
 void Log::log() {
-    Log::log(Commit::getHeadCommit());
+    Log::log(Commit::getLatestCommit());
 }
 
 void Log::log(string id) {

@@ -152,6 +152,16 @@ string Commit::getHeadCommit() {
     return ss.str();
 }
 
+string Commit::getLatestCommit() {
+    if (Commit::isGenesis())
+        return "";
+
+    ifstream in(Defaults::fgitLatest);
+    stringstream ss;
+    ss << in.rdbuf();
+    return ss.str();
+}
+
 /**
  * @brief reads the commit at the HEAD
  *
@@ -186,6 +196,10 @@ void Commit::writeCommit() {
     out.close();
 
     out.open(Defaults::fgitHead);
+    out << this->getId();
+    out.close();
+
+    out.open(Defaults::fgitLatest);
     out << this->getId();
     out.close();
 

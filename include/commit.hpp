@@ -37,6 +37,7 @@ class Commit {
 
     static bool isGenesis();
     static std::string getHeadCommit();
+    static std::string getLatestCommit();
     static Commit commit(std::map<std::string, std::pair<bool, bool>> files, std::string author,
                          std::string message);
 
