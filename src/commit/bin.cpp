@@ -16,6 +16,7 @@ Bin::Bin(string path, bool deletion) {
     this->perms = fs::status(path).permissions();
     this->deletion = deletion;
     this->diff = createDiff(Commit::isGenesis());
+    this->binary = true;
 }
 
 /**

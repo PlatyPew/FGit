@@ -48,8 +48,11 @@ string Blob::createDiff(bool genesis) {
         return Diff::diff("", newData.str());
 
     // Read old file
-    ifstream fileOld(Defaults::fgitHead + this->path);
+    ifstream fileOld(Defaults::fgitCaches + this->path);
     stringstream oldData;
+    if (!fileOld)
+        return "";
+
     oldData << fileOld.rdbuf();
     fileOld.close();
 
@@ -90,6 +93,15 @@ string Blob::getDiff() {
  */
 bool Blob::getDeletion() {
     return this->deletion;
+}
+
+/**
+ * @brief getter if file is binary type
+ *
+ * @return true if binary
+ */
+bool Blob::getBinary() {
+    return this->binary;
 }
 
 /**

@@ -7,6 +7,7 @@
 #include "commit.hpp"
 #include "add.hpp"
 #include "compress.hpp"
+#include "reset.hpp"
 
 #include <iostream>
 #include <vector>
@@ -25,6 +26,12 @@ void runSubCmd(string subCmd,int argc ,char ** argv) {
 
     if (subCmd == "log")
         Log::log();
+    else if (subCmd == "reset") {
+        if (argc == 3)
+            Reset::reset(argv[2]);
+        else
+            cout << "Reset missing commit id!" << endl;
+    }
     
     if (subCmd == "add"){
         Add add;

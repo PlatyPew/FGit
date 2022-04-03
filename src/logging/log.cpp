@@ -7,8 +7,18 @@
 
 using std::cout, std::endl, std::ifstream, std::string;
 
+/**
+ * @brief prints out commit log
+ *
+ * @param commit: commit to read from
+ */
 void Log::print(Commit commit) {
-    cout << "Commit: " << commit.getId() << endl;
+    cout << "Commit: " << commit.getId();
+
+    if (commit.getId() == Commit::getHeadCommit())
+        cout << " <--- HEAD";
+    cout << endl;
+
     cout << "Timestamp: " << commit.getTimestamp() << endl;
     cout << "Author: " << commit.getAuthor() << endl;
     cout << "Message: " << commit.getMessage() << endl;
@@ -17,10 +27,19 @@ void Log::print(Commit commit) {
         cout << endl;
 }
 
+/**
+ * @brief get commit log from latest
+ *
+ */
 void Log::log() {
-    Log::log(Commit::getHeadCommit());
+    Log::log(Commit::getLatestCommit());
 }
 
+/**
+ * @brief get commit log from commit id
+ *
+ * @param id: commit id
+ */
 void Log::log(string id) {
     if (Commit::isGenesis())
         return;

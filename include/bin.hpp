@@ -9,7 +9,7 @@ class Bin : public Blob {
     friend class cereal::access;
 
   private:
-    std::string createDiff(bool genesis);
+    std::string createDiff(bool genesis) override;
 
     template <class Archive> void serialize(Archive& archive) {
         archive(cereal::base_class<Blob>(this));
