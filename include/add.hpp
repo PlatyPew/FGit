@@ -9,10 +9,15 @@ class Staged {
     private:
         vector<string> paths;
         string stagedFile;
+        vector<string> cachePath;
     public:
         Staged();
         void addToStaged(string fileName, bool isDelete, bool isBinary);
         void printStaged();
+        static string readFileIntoString(const string& path);
+        static std::vector<string> getAllFilesFromDirectory(const char *);
+        static bool ifStageable(std::vector<string>,string);
+        
 };
 
 class Add {
@@ -22,4 +27,7 @@ class Add {
     public:
         void add();
         void add(string fileName);
+        void setBinary();
+        static bool checkIfBinary(string);
+        
 };
