@@ -6,6 +6,8 @@
 #include "defaults.hpp"
 #include "status.hpp"
 #include "add.hpp"
+#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,7 +15,11 @@ status::status() {
     allHomePaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
     AllCachePaths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
 }
-
+void printMap(std::map<string, pair<bool, bool>> stageMap){
+    cout << "\nFile Staged! \n";
+    for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
+            std::cout <<endl<< itr->first<<endl;
+}
 std::map<string, pair<bool, bool>> status::checkThrough() {
     map<string, pair<bool, bool>> files;
     vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
@@ -33,10 +39,10 @@ std::map<string, pair<bool, bool>> status::checkThrough() {
         bool isInGitIGnore = checkIfNameInVector(Defaults::gitIgnore,currentPaths[i]);
         if(isModifiedOrAdded && !isInGitIGnore){
             bool isBinary = status::checkIfBinary(currentPaths[i]);
-            cout << endl << currentPaths[i] << " HAS BEEN ADDED \n";
             files.insert(pair<string, pair<bool, bool>>(currentPaths[i], pair<bool, bool>(false, isBinary))); 
         }
     }
+    printMap(files);
     return files;
 }
 
@@ -49,6 +55,7 @@ bool status::isFileDelete(std::string fileName){
             return true;
         }
 }
+
 // void addModifiedAndNewFile(){
 //     vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
 //     for

@@ -25,12 +25,13 @@ void Add::add(string fileName) {
     // TODO: Implement Daryl's helper function for the isStageable
 
     if (isStageable) {
+        cout << "Can be staged\n";
         this->staged.addToStaged(fileName, isDelete, isBinary);
         // this->staged.printStaged();
     }
 
     else {
-        cout << "Nothing to be staged";
+        cout << "Nothing to be staged\n";
     }
 }
 bool Add::checkIfBinary(string fileName) {
@@ -58,7 +59,7 @@ void Staged::addToStaged(string fileName, bool isDelete, bool isBinary) {
     fout << fileName << "," << isDelete << "," << isBinary << endl;
     fout.close();
 
-    this->printStaged();
+    // this->printStaged();
 }
 
 void Staged::printStaged() {
