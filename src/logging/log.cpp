@@ -42,7 +42,7 @@ void Log::log() {
  */
 void Log::log(string id) {
     if (Commit::isGenesis())
-        return;
+        throw "There are no commits in the tree";
 
     Commit c;
     ifstream in;

@@ -19,7 +19,6 @@ Blob::Blob(string path, bool deletion) {
     this->path = path;
     this->perms = fs::status(path).permissions();
     this->deletion = deletion;
-    this->diff = createDiff(Commit::isGenesis());
 }
 
 /**
@@ -30,7 +29,7 @@ Blob::Blob(string path, bool deletion) {
  */
 string Blob::createDiff(bool genesis) {
     if (!fs::exists(this->path))
-        return "";
+        throw "File does not exist";
 
     if (this->deletion)
         return "";
@@ -39,7 +38,7 @@ string Blob::createDiff(bool genesis) {
     ifstream fileNew(this->path);
     stringstream newData;
     if (!fileNew)
-        return "";
+        throw "File cannot be opened";
 
     newData << fileNew.rdbuf();
     fileNew.close();
@@ -51,7 +50,7 @@ string Blob::createDiff(bool genesis) {
     ifstream fileOld(Defaults::fgitCaches + this->path);
     stringstream oldData;
     if (!fileOld)
-        return "";
+        throw "File cannot be opened";
 
     oldData << fileOld.rdbuf();
     fileOld.close();
@@ -112,4 +111,8 @@ bool Blob::getBinary() {
  */
 string Blob::getContents(string prevContents) {
     return Diff::patch(this->diff, prevContents);
+}
+
+void Blob::setDiff(string diff) {
+    this->diff = diff;
 }

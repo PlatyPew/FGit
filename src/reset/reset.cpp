@@ -15,8 +15,7 @@ using std::map, std::stack, std::string, std::pair, std::vector, std::ofstream, 
     std::endl;
 namespace fs = std::filesystem;
 
-Reset::Reset(string path, stack<Blob> blobs) {
-    this->path = path;
+Reset::Reset(string path, stack<Blob> blobs) : path(path) {
     this->patchContents(blobs);
 }
 

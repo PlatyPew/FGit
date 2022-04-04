@@ -11,11 +11,7 @@
 using std::ifstream, std::istream, std::ostream, std::string, std::stringstream;
 namespace fs = std::filesystem;
 
-Bin::Bin(string path, bool deletion) {
-    this->path = path;
-    this->perms = fs::status(path).permissions();
-    this->deletion = deletion;
-    this->diff = createDiff(Commit::isGenesis());
+Bin::Bin(string path, bool deletion) : Blob(path, deletion) {
     this->binary = true;
 }
 
@@ -26,17 +22,17 @@ Bin::Bin(string path, bool deletion) {
  * @return binary file
  */
 string Bin::createDiff(bool genesis) {
-    if (!fs::exists(this->path))
-        return "";
+    if (!fs::exists(this->getPath()))
+        throw "File does not exist";
 
-    if (this->deletion)
+    if (this->getDeletion())
         return "";
 
     // Read file and convert to string
-    ifstream fileNew(this->path, std::ios::binary);
+    ifstream fileNew(this->getPath(), std::ios::binary);
     stringstream newData;
     if (!fileNew)
-        return "";
+        throw "File cannot be opened";
 
     newData << fileNew.rdbuf();
     fileNew.close();

@@ -4,6 +4,14 @@ set(PROJECT "fgit")
 project(${PROJECT})
 
 set(CMAKE_CXX_STANDARD 20)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 set(DMP "${PROJECT_SOURCE_DIR}/lib/dmp")
 set(SHA1 "${PROJECT_SOURCE_DIR}/lib/sha1" )
 set(CEREAL "${PROJECT_SOURCE_DIR}/lib/cereal/include")

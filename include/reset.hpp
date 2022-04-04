@@ -7,7 +7,7 @@
 
 class Reset {
   private:
-    std::string path;
+    const std::string path;
     std::string contents = "";
     bool deletion = false;
 

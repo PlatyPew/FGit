@@ -11,17 +11,16 @@ class Blob {
     friend class cereal::access;
 
   private:
-    virtual std::string createDiff(bool genesis);
+    std::string path;
+    bool deletion;
+    fs::perms perms;
+    std::string diff;
 
     template <class Archive> void serialize(Archive& archive) {
         archive(path, perms, diff, deletion, binary);
     }
 
   protected:
-    std::string path;
-    fs::perms perms;
-    std::string diff;
-    bool deletion;
     bool binary = false;
 
   public:
@@ -34,4 +33,6 @@ class Blob {
     bool getDeletion();
     bool getBinary();
     std::string getContents(std::string prevContents);
+    void setDiff(std::string diff);
+    virtual std::string createDiff(bool genesis);
 };

@@ -122,15 +122,18 @@ Commit Commit::commit(map<string, pair<bool, bool>> files, string author, string
         // If it is a binary file
         if (attr.second) {
             Bin b(f, attr.first);
+            b.setDiff(b.createDiff(Commit::isGenesis()));
             blobs.insert(pair<string, Blob>(f, (Blob)b));
         } else {
             Blob b(f, attr.first);
+            b.setDiff(b.createDiff(Commit::isGenesis()));
             blobs.insert(pair<string, Blob>(f, b));
         }
     }
 
     Commit c(blobs, author, message);
     c.createCommit();
+    c.writeCommit();
 
     cout << "Commit " << c.getId() << " created!" << endl;
 
