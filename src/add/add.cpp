@@ -1,12 +1,13 @@
 #include "add.hpp"
 #include "commit.hpp"
 #include "diff.hpp"
+#include "status.hpp"
 #include <dirent.h>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <defaults.hpp>
 using namespace std;
 
 void Add::add() {
@@ -15,11 +16,11 @@ void Add::add() {
 
 void Add::add(string fileName) {
     cout << "constructor with filename " << fileName << endl;
-    vector<string> cachePath = Staged::getAllFilesFromDirectory("../Fake-Git/.fgit/caches");
+    
     bool isDelete = false;
     bool isBinary = checkIfBinary(fileName);
-    bool isStageable = Staged::ifStageable(cachePath, fileName);
-
+    bool isStageable = status::checkIfFileInLocal(fileName);
+    
     // TODO: Add git status code here , get values for isDelete and isBinary
     // TODO: Implement Daryl's helper function for the isStageable
 
@@ -63,7 +64,6 @@ void Staged::addToStaged(string fileName, bool isDelete, bool isBinary) {
 void Staged::printStaged() {
     ifstream fin;
     string line;
-
     fin.open(this->stagedFile);
     while (fin) {
         getline(fin, line);
@@ -91,16 +91,17 @@ vector<string> Staged::getAllFilesFromDirectory(const char* subPath) {
         if (de->d_type == DT_REG) {
 
             cacheFiles.push_back(de->d_name);
-            printf("%s\n", de->d_name);
         }
     closedir(dr);
     return cacheFiles;
 }
 
-bool Staged::ifStageable(std::vector<string> FgitPaths, string filePath) {
-    string CachePath = "";
+bool Staged::ifModifiedOrAdded(string filePath) {
+    string CachePath;
+    CachePath.assign(Defaults::fgitCaches);
+    vector<string> FgitPaths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
     bool isExist = false;
-    string fgitCachePath = "../Fake-Git/.fgit/caches/";
+    string fgitCachePath = CachePath;
     for (int i = 0; i < FgitPaths.size(); i++) {
         if (FgitPaths[i].compare(filePath) == 0) {
             CachePath = fgitCachePath + FgitPaths[i];
@@ -112,21 +113,16 @@ bool Staged::ifStageable(std::vector<string> FgitPaths, string filePath) {
     if (isExist) {
         string FgitContent = readFileIntoString(CachePath);
         string currentContent = readFileIntoString(filePath);
-        cout << endl << "FGIT " << FgitContent;
-        cout << endl << "REPO " << currentContent << endl;
         if (Diff::isDiff(currentContent, FgitContent)) {
-            cout << endl << "MODIFIED";
             return true;
         } else {
-            cout << "UNMODIFIED";
             return false;
         }
         return Diff::isDiff(FgitContent, currentContent);
-    } else {
-        cout << "FILE DO NOT EXIST";
+    } 
+    else {
+        return true;
     }
-
-    return true;
 }
 
 string Staged::readFileIntoString(const string& path) {
