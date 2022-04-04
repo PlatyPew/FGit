@@ -55,6 +55,7 @@ bool status::isFileDelete(std::string fileName){
             return true;
         }
 }
+
 // void addModifiedAndNewFile(){
 //     vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
 //     for
