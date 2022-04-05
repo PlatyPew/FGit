@@ -18,16 +18,22 @@ class Staged {
     static string readFileIntoString(const string& path);
     static std::vector<string> getAllFilesFromDirectory(const char*);
     static bool ifModifiedOrAdded(string);
+    
 };
 
 class Add {
   private:
     Staged staged;
     static bool checkIfFileInLocal(std::string);
+    
+
   public:
     void add();
     void add(string fileName);
     void setBinary();
     static bool checkIfBinary(string);
+    static bool updateStage(std::string fileName);
+    static void write(vector<string>);
+    // bool checkIfFileStagable(string fileName);
     
 };

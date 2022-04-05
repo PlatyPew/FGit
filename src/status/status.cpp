@@ -15,10 +15,25 @@ status::status() {
     allHomePaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
     AllCachePaths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
 }
-void printMap(std::map<string, pair<bool, bool>> stageMap){
+void status::printMap(std::map<string, pair<bool, bool>> stageMap){
     cout << "\nFile Staged! \n";
     for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
             std::cout <<endl<< itr->first<<endl;
+}
+void status::printMap(){
+    std::map<string, pair<bool, bool>> stageMap = status::checkThrough();
+    cout << "\nFile Staged! \n";
+    for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
+            std::cout <<endl<< itr->first<<endl;
+    
+}
+bool status::checkIfItemInMap(std::map<string, pair<bool, bool>> stageMap,string fileName){
+    if(stageMap.count(fileName) > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 std::map<string, pair<bool, bool>> status::checkThrough() {
     map<string, pair<bool, bool>> files;
@@ -28,7 +43,6 @@ std::map<string, pair<bool, bool>> status::checkThrough() {
         if(isDelete){
             std::string filePath = Defaults::fgitCaches + paths[i];
             bool isBinary = Add::checkIfBinary(filePath);
-            cout << endl << filePath << " HAS BEEN ADDED \n";
             files.insert(pair<string, pair<bool, bool>>(paths[i], pair<bool, bool>(isDelete, isBinary)));   
         }
     }
@@ -42,7 +56,7 @@ std::map<string, pair<bool, bool>> status::checkThrough() {
             files.insert(pair<string, pair<bool, bool>>(currentPaths[i], pair<bool, bool>(false, isBinary))); 
         }
     }
-    printMap(files);
+    // printMap(files);
     return files;
 }
 
@@ -68,31 +82,6 @@ bool status::isFileDelete(std::string fileName){
 //     Staged::ifModifiedOrAdded(); 
 // }
 
-void status::write(vector<string> v) {
-    ofstream file;
-    file.open("staged");
-    for (int i = 0; i < v.size(); ++i) {
-        file << v[i] << endl;
-    }
-    file.close();
-}
-
-// bool status::getFileContent(std::string fileName, int isBinary, int isDelete) {
-//     int binary = 0;
-//     string inputform = fileName + "," + to_string(binary) + "," + "1";
-//     string inputform2 = fileName + "," + to_string(binary) + "," + "0";
-//     vector<string> x;
-//     std::ifstream file("staged");
-//     std::string str;
-//     while (std::getline(file, str)) {
-//         if (str.compare(inputform) == 0 || str.compare(inputform2) == 0) {
-//             str = inputform;
-//         }
-//         x.push_back(str);
-//     }
-//     write(x);
-//     return true;
-// }
 
 bool status::checkIfNameInVector(vector<std::string> gitIgnore,string fileName){
     for (int i = 0; i < gitIgnore.size(); i++){
@@ -122,4 +111,8 @@ bool status::checkIfFileInLocal(std::string fileName){
     vector <std::string> allHomePaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
     bool inLocal = status::checkIfNameInVector(allHomePaths,fileName);
     return inLocal;
+}
+
+bool status::checkIfFileStagable(string fileName){
+    return status::checkIfItemInMap(status::checkThrough() , fileName);
 }

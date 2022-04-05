@@ -19,21 +19,53 @@ void Add::add(string fileName) {
     
     bool isDelete = false;
     bool isBinary = checkIfBinary(fileName);
-    bool isStageable = status::checkIfFileInLocal(fileName);
+    bool isStageable = status::checkIfFileStagable(fileName);
     
     // TODO: Add git status code here , get values for isDelete and isBinary
     // TODO: Implement Daryl's helper function for the isStageable
 
     if (isStageable) {
         cout << "Can be staged\n";
-        this->staged.addToStaged(fileName, isDelete, isBinary);
+        // this->staged.addToStaged(fileName, isDelete, isBinary);
         // this->staged.printStaged();
+        Add::updateStage(fileName);
     }
 
     else {
         cout << "Nothing to be staged\n";
     }
 }
+void Add::write(vector<string> v) {
+    ofstream file;
+    cout <<"\n WRITING \n";
+    file.open("staged");
+    for (int i = 0; i < v.size(); ++i) {
+        file << v[i] << endl;
+    }
+    file.close();
+}
+
+bool Add::updateStage(std::string fileName) {
+    vector<string> filePathsInStage;
+    std::ifstream file("staged");
+    std::string str;
+    bool isInFile = false;
+    while (std::getline(file, str)) {
+        if (str.compare(fileName) == 0) {
+            isInFile = true;
+        }
+        filePathsInStage.push_back(str);
+    }
+    if(isInFile){
+        return true;
+    }
+    else{
+        filePathsInStage.push_back(fileName);
+    }
+    write(filePathsInStage);
+    return true;
+}
+
 bool Add::checkIfBinary(string fileName) {
     int c;
     std::ifstream ifs(fileName);
@@ -107,7 +139,6 @@ bool Staged::ifModifiedOrAdded(string filePath) {
         if (FgitPaths[i].compare(filePath) == 0) {
             CachePath = fgitCachePath + FgitPaths[i];
             isExist = true;
-            cout << "FILE EXIST";
             break;
         }
     }

@@ -29,16 +29,17 @@ void runSubCmd(string subCmd,int argc ,char ** argv) {
 
     if (subCmd == "log")
         Log::log();
-    
+    if (subCmd == "showmap"){
+        status::printMap();
+    }
     if (subCmd == "add"){
         
         Add add;
         if (argc == 2) {
-            status::checkThrough();
             add.add();
         }
         else {
-            status::checkThrough();
+            
             string filePath = argv[2];
             add.add(argv[2]);
         }
