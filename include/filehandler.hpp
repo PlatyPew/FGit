@@ -6,7 +6,7 @@ class Filehandler {
         std::ifstream in(filename);
         std::stringstream data;
         if (!in)
-            return "";
+            throw "Cannot open file!";
 
         data << in.rdbuf();
         in.close();
@@ -16,6 +16,8 @@ class Filehandler {
 
     static void write(std::string filename, std::string contents) {
         std::ofstream out;
+        if (!out)
+            throw "Cannot open file!";
         out.open(filename);
         out << contents;
         out.close();
