@@ -70,14 +70,14 @@ bool Add::checkIfBinary(string fileName) {
     int c;
     std::ifstream ifs(fileName);
     if (ifs.fail()) {
-        return 0;
+        return false;
     }
     while ((c = ifs.get()) != EOF && c <= 127)
         ;
     if (c == EOF) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 
