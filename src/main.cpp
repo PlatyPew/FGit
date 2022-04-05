@@ -29,7 +29,7 @@ void runSubCmd(string subCmd,int argc ,char ** argv) {
 
     if (subCmd == "log")
         Log::log();
-    if (subCmd == "showmap"){
+    if (subCmd == "status"){
         status::printMap();
     }
     if (subCmd == "add"){

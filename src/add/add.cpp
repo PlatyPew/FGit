@@ -129,7 +129,7 @@ vector<string> Staged::getAllFilesFromDirectory(const char* subPath) {
     return cacheFiles;
 }
 
-bool Staged::ifModifiedOrAdded(string filePath) {
+int Staged::ifModifiedOrAdded(string filePath) {
     string CachePath;
     CachePath.assign(Defaults::fgitCaches);
     vector<string> FgitPaths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
@@ -146,14 +146,14 @@ bool Staged::ifModifiedOrAdded(string filePath) {
         string FgitContent = readFileIntoString(CachePath);
         string currentContent = readFileIntoString(filePath);
         if (Diff::isDiff(currentContent, FgitContent)) {
-            return true;
+            return 2;
         } else {
-            return false;
+            return 0;
         }
         return Diff::isDiff(FgitContent, currentContent);
     } 
     else {
-        return true;
+        return 3;
     }
 }
 

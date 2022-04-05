@@ -17,7 +17,7 @@ class Staged {
     void printStaged();
     static string readFileIntoString(const string& path);
     static std::vector<string> getAllFilesFromDirectory(const char*);
-    static bool ifModifiedOrAdded(string);
+    static int ifModifiedOrAdded(string);
     
 };
 

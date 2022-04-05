@@ -17,12 +17,10 @@ class status {
     const char* cachePath;
     static bool isFileDeleted(vector<string>, string);
     static std::map<string, pair<bool, bool>> checkThrough();
-
-
+    static std::map<string, pair<bool, int>> checkThrough(map<string, pair<bool, int>> files);
     static bool isFileDelete(std::string fileName);
     static bool checkIfNameInVector(vector<std::string> gitIgnore,string fileName);
     static bool checkIfBinary(string fileName);
-    
     //Print all trackable map
     static void printMap();
     //Print out any map.
