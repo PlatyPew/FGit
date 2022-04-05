@@ -14,9 +14,9 @@ bool checkIfBinary(string fileName) {
     while ((c = ifs.get()) != EOF && c <= 127)
         cout<<c;
     if (c == EOF) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 bool is_text(char *filename) {
