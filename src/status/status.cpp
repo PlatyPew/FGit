@@ -1,5 +1,6 @@
 #include <dirent.h>
 #include <fstream>
+#include <ios>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -131,16 +132,16 @@ bool status::checkIfNameInVector(vector<std::string> gitIgnore,string fileName){
 
 bool status::checkIfBinary(string fileName) {
     int c;
-    std::ifstream ifs(fileName);
+    std::ifstream ifs(fileName, std::ios::binary);
     if (ifs.fail()) {
-        return 0;
+        throw "file does not exist";
     }
     while ((c = ifs.get()) != EOF && c <= 127)
         ;
     if (c == EOF) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 

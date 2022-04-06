@@ -1,7 +1,11 @@
+#include <filesystem>
 #include <string>
 
 class Filehandler {
   public:
+    static bool exists(std::string filename) {
+        return std::filesystem::exists(filename);
+    }
     static std::string read(std::string filename) {
         std::ifstream in(filename);
         std::stringstream data;

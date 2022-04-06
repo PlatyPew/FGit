@@ -1,12 +1,23 @@
 #pragma once
 
+#include "defaults.hpp"
+
 #include "diff_match_patch.h"
 #include "sha1.hpp"
 
+#include <fstream>
 #include <string>
 
 class Diff {
+  private:
+    std::string path;
+    std::string contents = "";
+    void print();
+
   public:
+    Diff(std::string path);
+    static void diff();
+
     /**
      * @brief creates a unidiff patch between text1 -> text 2
      *

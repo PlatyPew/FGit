@@ -8,6 +8,7 @@
 #include "commit.hpp"
 #include "compress.hpp"
 #include "reset.hpp"
+#include "status.hpp"
 
 #include <iostream>
 #include <vector>
