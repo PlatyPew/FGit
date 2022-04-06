@@ -3,29 +3,27 @@
 #include "filehandler.hpp"
 #include "status.hpp"
 
-Diff::Diff(std::string path) {
+Diff::Diff(std::string path, bool deleted, bool binary) {
     this->path = path;
-    // Spaghettii woooooohoohohoo
-    string cache = Defaults::fgitCaches + path;
-    if (!Filehandler::exists(cache) && Filehandler::exists(path)) {
-        // File was created
-        if (status::checkIfBinary(path))
-            this->contents = "File is Binary";
-        else
-            this->contents = Diff::diff("", Filehandler::read(path));
-    } else if (Filehandler::exists(cache) && Filehandler::exists(path)) {
-        // File was modified
-        if (status::checkIfBinary(path))
-            this->contents = "File is Binary";
-        else
-            this->contents = Diff::diff(Filehandler::read(cache), Filehandler::read(path));
-    } else if (Filehandler::exists(cache) && !Filehandler::exists(path)) {
-        // File was deleted
-        if (status::checkIfBinary(cache))
-            this->contents = "File is Binary";
-        else
-            this->contents = Diff::diff(Filehandler::read(cache), "");
+
+    if (binary) {
+        this->contents = "File is Binary";
+        return;
     }
+
+    string cache = Defaults::fgitCaches + path;
+
+    if (deleted) {
+        this->contents = Diff::diff(Filehandler::read(cache), "");
+        return;
+    }
+
+    // Spaghettii woooooohoohohoo
+    if (!Filehandler::exists(cache))
+        this->contents = Diff::diff("", Filehandler::read(path)); // File was created
+    else
+        this->contents =
+            Diff::diff(Filehandler::read(cache), Filehandler::read(path)); // File was modified
 }
 
 void Diff::print() {
@@ -36,7 +34,7 @@ void Diff::print() {
 void Diff::diff() {
     map<string, pair<bool, bool>> files = status::checkThrough();
     for (auto const& [key, value] : files) {
-        Diff d(key);
+        Diff d(key, value.first, value.second);
         d.print();
     }
 }

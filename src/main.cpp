@@ -30,6 +30,8 @@ void runSubCmd(string subCmd, int argc, char** argv) {
             Reset::reset(argv[2]);
         else
             throw "Missing commit id";
+    } else if (subCmd == "diff") {
+        Diff::diff();
     }
 
     if (subCmd == "add") {

@@ -15,7 +15,7 @@ class Diff {
     void print();
 
   public:
-    Diff(std::string path);
+    Diff(std::string path, bool deleted, bool binary);
     static void diff();
 
     /**
