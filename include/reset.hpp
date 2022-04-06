@@ -22,5 +22,6 @@ class Reset {
     std::string getPath();
     std::string getContents();
 
+    static void reset();
     static void reset(std::string id);
 };

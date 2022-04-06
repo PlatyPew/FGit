@@ -98,6 +98,10 @@ string Reset::getContents() {
     return this->contents;
 }
 
+void Reset::reset() {
+    reset(Commit::getHeadCommit());
+}
+
 /**
  * @brief reset the contents
  *
