@@ -59,6 +59,7 @@ void runSubCmd(string subCmd, int argc, char** argv) {
         string message = argv[3];
 
         Commit::commit(commitHandler(argc, argv), author, message);
+        return;
     }
 
     // fgit reset [commit hash]
@@ -75,6 +76,7 @@ void runSubCmd(string subCmd, int argc, char** argv) {
         default:
             throw "Too many arguments";
         }
+        return;
     }
 
     throw "Subcommand does not exist!";
