@@ -1,0 +1,15 @@
+[submodule "lib/dmp"]
+	path = lib/dmp
+	url = https://github.com/leutloff/diff-match-patch-cpp-stl.git
+[submodule "lib/sha1"]
+	path = lib/sha1
+	url = https://github.com/vog/sha1.git
+[submodule "lib/zpp_bits"]
+	path = lib/zpp_bits
+	url = https://github.com/eyalz800/zpp_bits.git
+[submodule "lib/cereal"]
+	path = lib/cereal
+	url = https://github.com/USCiLab/cereal.git
+[submodule "lib/gzip"]
+	path = lib/gzip
+	url = https://github.com/mapbox/gzip-hpp.git
