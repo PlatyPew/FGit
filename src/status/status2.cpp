@@ -184,7 +184,7 @@ std::map<string, pair<bool, bool>> Status::checkThrough(){
 
 void Status::status(){
     std::vector<Status> allStatusObj = Status::getAllStatus();
-    string StatusArray[3] = {"DELETED","MODIFIED","NEWLY ADDED"};
+    string StatusArray[3] = {"NEW ADDED","DELETED","MODIFED"};
     for(int i = 1; i <=3; i++){
         cout << endl<<"THESE FILES HAS BEEN " << StatusArray[i-1] << endl;
         cout << "\nFile STATUS \n" << "====================================================================================\n";
