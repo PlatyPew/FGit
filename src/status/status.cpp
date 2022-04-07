@@ -164,10 +164,10 @@ std::map<string, pair<bool, bool>> Status::checkThrough() {
     for (auto statObj = allStatusObj.begin(); statObj != allStatusObj.end(); ++statObj) {
         if (statObj->flagStatus == 2) {
             filesMap.insert(pair<string, pair<bool, bool>>(
-                statObj->path, pair<bool, bool>(false, statObj->binary)));
+                statObj->path, pair<bool, bool>(true, statObj->binary)));
         } else if (statObj->flagStatus == 1 || statObj->flagStatus == 3) {
             filesMap.insert(pair<string, pair<bool, bool>>(
-                statObj->path, pair<bool, bool>(true, statObj->binary)));
+                statObj->path, pair<bool, bool>(false, statObj->binary)));
         }
     }
     return filesMap;

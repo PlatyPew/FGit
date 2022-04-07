@@ -22,11 +22,11 @@ Bin::Bin(string path, bool deletion) : Blob(path, deletion) {
  * @return binary file
  */
 string Bin::createDiff(bool genesis) {
-    if (!fs::exists(this->getPath()))
-        throw "File does not exist";
-
     if (this->getDeletion())
         return "";
+
+    if (!fs::exists(this->getPath()))
+        throw "File does not exist";
 
     // Read file and convert to string
     ifstream fileNew(this->getPath(), std::ios::binary);

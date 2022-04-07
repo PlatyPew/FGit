@@ -28,11 +28,11 @@ Blob::Blob(string path, bool deletion) {
  * @return unidiff patch format
  */
 string Blob::createDiff(bool genesis) {
-    if (!fs::exists(this->path))
-        throw "File does not exist";
-
     if (this->deletion)
         return "";
+
+    if (!fs::exists(this->path))
+        throw "File does not exist";
 
     // Read file and convert to string
     ifstream fileNew(this->path);

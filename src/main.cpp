@@ -6,6 +6,23 @@
 
 using namespace std;
 
+map<string, pair<bool, bool>> commitHandler(int argc, char** argv) {
+    map<string, pair<bool, bool>> commitable = Status::checkThrough();
+
+    map<string, pair<bool, bool>> toCommit;
+    for (int i = 4; i < argc; i++) {
+        string file = argv[i];
+
+        if (!commitable.count(file))
+            throw "File cannot be commited!";
+
+        pair<bool, bool> stage = commitable.at(file);
+        toCommit.insert(pair<string, pair<bool, bool>>(file, stage));
+    }
+
+    return toCommit;
+}
+
 void runSubCmd(string subCmd, int argc, char** argv) {
     // fgit init
     if (subCmd == "init") {
@@ -33,6 +50,17 @@ void runSubCmd(string subCmd, int argc, char** argv) {
         return;
     }
 
+    // fgit commit <author> <message> [files]
+    if (subCmd == "commit") {
+        if (argc < 5)
+            throw "Not enough arguments!";
+
+        string author = argv[2];
+        string message = argv[3];
+
+        Commit::commit(commitHandler(argc, argv), author, message);
+    }
+
     // fgit reset [commit hash]
     if (subCmd == "reset") {
         switch (argc) {
@@ -55,9 +83,11 @@ int main(int argc, char** argv) {
         string subcmd(argv[1]);
         try {
             runSubCmd(subcmd, argc, argv);
-        } catch (const string msg) {
+        } catch (const char* msg) {
             cerr << msg << endl;
         }
+    } else {
+        cout << "Subcommands available: init, status, log, diff, commit, reset" << endl;
     }
 
     return 0;
