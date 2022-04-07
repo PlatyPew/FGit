@@ -76,6 +76,8 @@ void runSubCmd(string subCmd, int argc, char** argv) {
             throw "Too many arguments";
         }
     }
+
+    throw "Subcommand does not exist!";
 }
 
 int main(int argc, char** argv) {
