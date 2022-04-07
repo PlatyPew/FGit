@@ -44,9 +44,7 @@ void runSubCmd(string subCmd, int argc, char** argv) {
         }
     }
     if (subCmd == "status") {
-        Status::printFiles();
-        Status::printStatus();
-        Status::printMap();
+        Status::status();   
     }
 }
 

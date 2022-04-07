@@ -32,6 +32,9 @@ bool Status::isCreated(){
         return false;
     }
 }
+bool Status::getBinary(){
+    return this->binary;
+}
 bool Status::isDeleted(){
     // RETURN TRUE IF IN CACCHE BUT NOT IN LOCAL
     vector<string> cachePaths = Status::getAllFilesFromDirectory(Defaults::fgitCaches);
@@ -162,18 +165,7 @@ std::set<std::string> Status::getAllFiles(){
     return allFiles;
 }
 
-void Status::printFiles(){
-    std::set<std::string> x = Status::getAllFiles();
-    readFiles(x);
-}
 
-template<class T>
-void Status::readFiles(T allPaths){
-    for (auto it = allPaths.begin(); it != allPaths.end(); ++it){
-        cout << ' ' << *it;
-    }
-    cout << endl;
-}
 
 std::map<string, pair<bool, bool>> Status::checkThrough(){
     std::map<string, pair<bool, bool>> filesMap;
@@ -190,7 +182,7 @@ std::map<string, pair<bool, bool>> Status::checkThrough(){
 }
 
 
-void Status::printStatus(){
+void Status::status(){
     std::vector<Status> allStatusObj = Status::getAllStatus();
     string StatusArray[3] = {"DELETED","MODIFIED","NEWLY ADDED"};
     for(int i = 1; i <=3; i++){
@@ -204,12 +196,6 @@ void Status::printStatus(){
     }
 }
 
-void Status::printMap(){
-    std::map<string, pair<bool, bool>> stageMap = Status::checkThrough();
-    cout << "\n These files are stagable! \n";
-    for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
-            std::cout <<endl<< itr->first<< "\t" << itr->second.first<< "\t"<< itr->second.second<< "\t" << endl;
-}
 std::vector<Status> Status::getAllStatus(){
     std::set<std::string> allPaths = Status::getAllFiles();
     std::vector<Status> allStatus;
@@ -221,3 +207,4 @@ std::vector<Status> Status::getAllStatus(){
     }
     return allStatus;
 }
+
