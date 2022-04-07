@@ -18,7 +18,7 @@ void Add::add(string fileName) {
     cout << "constructor with filename " << fileName << endl;
     
     bool isDelete = false;
-    bool isBinary = checkIfBinary(fileName);
+    bool isBinary = status::checkIfBinary(fileName);
     bool isStageable = status::checkIfFileStagable(fileName);
     
     // TODO: Add git status code here , get values for isDelete and isBinary
@@ -66,20 +66,6 @@ bool Add::updateStage(std::string fileName) {
     return true;
 }
 
-bool Add::checkIfBinary(string fileName) {
-    int c;
-    std::ifstream ifs(fileName);
-    if (ifs.fail()) {
-        return false;
-    }
-    while ((c = ifs.get()) != EOF && c <= 127)
-        ;
-    if (c == EOF) {
-        return false;
-    } else {
-        return true;
-    }
-}
 
 Staged::Staged() {
     this->stagedFile = "staged";

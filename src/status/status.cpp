@@ -48,6 +48,7 @@ bool status::checkIfItemInMap(std::map<string, pair<bool, bool>> stageMap,string
         return false;
     }
 }
+
 std::map<string, pair<bool, bool>> status::checkThrough() {
     // Cache check against local
     map<string, pair<bool, bool>> files;
@@ -56,7 +57,7 @@ std::map<string, pair<bool, bool>> status::checkThrough() {
         bool isDelete = isFileDelete(paths[i]);
         if(isDelete){
             std::string filePath = Defaults::fgitCaches + paths[i];
-            bool isBinary = Add::checkIfBinary(filePath);
+            bool isBinary = status::checkIfBinary(filePath);
             files.insert(pair<string, pair<bool, bool>>(paths[i], pair<bool, bool>(isDelete, isBinary)));   
         }
     }
