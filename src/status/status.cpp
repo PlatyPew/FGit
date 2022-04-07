@@ -65,24 +65,17 @@ bool Status::isModified() {
 }
 
 bool Status::isBinary() {
-    if (!Filehandler::exists(this->path)) {
-        // THORW?
-        return 0;
-    }
+    bool workspace = Filehandler::exists(this->path);
+    bool cache = Filehandler::exists(Defaults::fgitCaches + this->path);
 
-    int c;
-    string filename = this->path;
-    std::ifstream ifs(filename, std::ios::binary);
-    if (ifs.fail()) {
-        throw "file does not exist";
-    }
-    while ((c = ifs.get()) != EOF && c <= 127)
-        ;
-    if (c == EOF) {
-        return false;
-    } else {
-        return true;
-    }
+    if (!cache && !workspace)
+        throw "File not found";
+
+    if (workspace)
+        return Filehandler::isBinary(this->path);
+    else
+        return Filehandler::isBinary(Defaults::fgitCaches + this->path);
+
 }
 // 1 = created , 2 = delete, 3 = modified , 0 means unstageable
 int Status::insertStatusFlag() {
