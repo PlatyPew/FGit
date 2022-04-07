@@ -1,31 +1,34 @@
 #pragma once
 
-#include <dirent.h>
 #include <iostream>
-#include <vector>
 #include <map>
-using namespace std;
+#include <set>
+#include <vector>
 
-class status {
+class Status {
+  private:
+    bool isCreated();
+    bool isModified();
+    bool isDeleted();
+    bool isBinary();
+    int insertStatusFlag();
+    bool checkIfFileInLocal(std::string fileName);
+    bool checkIfFileInCache(std::string fileName);
+    static bool checkIfNameInVector(std::vector<std::string> Paths, std::string fileName);
+    static std::vector<std::string> getAllFilesFromDirectory(std::string subPath);
+    static std::vector<Status> getAllStatus();
+
+  protected:
+    std::string path;
+    int flagStatus;
+    bool binary;
+
   public:
-    
-    status();
-    static map<string, pair<bool, bool>> files;
-    vector<string> allHomePaths;
-    vector<string> AllCachePaths;
-    const char* homePath;
-    const char* cachePath;
-    static bool isFileDeleted(vector<string>, string);
-    static std::map<string, pair<bool, bool>> checkThrough();
-    static std::map<string, pair<bool, int>> checkThrough(map<string, pair<bool, int>> files);
-    static bool isFileDelete(std::string fileName);
-    static bool checkIfNameInVector(vector<std::string> gitIgnore,string fileName);
-    static bool checkIfBinary(string fileName);
-    //Print all trackable map
-    static void printMap();
-    //Print out any map.
-    static void printMap(std::map<string, pair<bool, bool>> stageMap);
-    static bool checkIfItemInMap(std::map<string, pair<bool, bool>>,string);
-    static bool checkIfFileStagable(string fileName);
-    static bool checkIfFileInLocal(string fileName);
+    Status(std::string path);
+    bool getBinary();
+    static void status(); // Print status
+    static std::map<std::string, std::pair<bool, bool>> checkThrough();
+    int getStatusFlag();
+    static std::set<std::string> getAllFiles(); // This will get a list of files in the cache and
+                                                // workspace and merge them together
 };

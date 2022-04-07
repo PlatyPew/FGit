@@ -1,7 +1,7 @@
 #pragma once
 
 #include "defaults.hpp"
-#include "status2.hpp"
+#include "status.hpp"
 
 #include "diff_match_patch.h"
 #include "sha1.hpp"

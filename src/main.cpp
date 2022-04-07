@@ -2,14 +2,12 @@
 #include "init.hpp"
 #include "log.hpp"
 
-#include "add.hpp"
 #include "bin.hpp"
 #include "blob.hpp"
 #include "commit.hpp"
 #include "compress.hpp"
 #include "reset.hpp"
 #include "status.hpp"
-#include "status2.hpp"
 #include <iostream>
 #include <vector>
 
@@ -35,14 +33,6 @@ void runSubCmd(string subCmd, int argc, char** argv) {
         Diff::diff();
     }
 
-    if (subCmd == "add") {
-        Add add;
-        if (argc == 2) {
-            add.add();
-        } else {
-            add.add(argv[2]);
-        }
-    }
     if (subCmd == "status") {
         Status::status();   
     }

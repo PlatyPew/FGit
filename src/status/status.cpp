@@ -1,139 +1,78 @@
+#include "status.hpp"
+#include "defaults.hpp"
+#include "diff.hpp"
+#include "filehandler.hpp"
+
+#include <algorithm>
 #include <dirent.h>
 #include <fstream>
 #include <ios>
 #include <iostream>
-#include <vector>
-#include <map>
-#include "defaults.hpp"
-#include "status.hpp"
-#include "add.hpp"
 #include <iterator>
-#include <algorithm>
+#include <map>
+#include <set>
+#include <vector>
 
-using namespace std;
+using std::vector, std::string, std::cout, std::endl, std::pair;
 
-status::status() {
-    allHomePaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
-    AllCachePaths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
+Status::Status(std::string path) {
+    this->path = path;
+    this->flagStatus = this->insertStatusFlag();
+    this->binary = isBinary();
 }
-void status::printMap(std::map<string, pair<bool, bool>> stageMap){
-    cout << "\nFile Staged! \n";
-    for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
-            std::cout <<endl<< itr->first<<endl;
+int Status::getStatusFlag() {
+    return this->flagStatus;
 }
-void status::printMap(){
-    map<string, pair<bool, int>> files;
-    string status[3] = {"DELETED","MODIFIED","NEWLY ADDED"};
-    vector<int> statusFlag;
-    std::map<string, pair<bool, int>> stageMap = status::checkThrough(files);
-    cout << "\nFile STATUS \n" << "====================================================================================\n";
-    for(int i = 1; i <=3; i++){
-        cout << endl<<"THESE FILES HAS BEEN " << status[i-1] << endl;
-        for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++){
-            if(itr->second.second == i){
-                std::cout << status[i-1] <<":\t"<< itr->first<< "\t" <<endl;
-            }
+bool Status::isCreated() {
+    bool isInCache = checkIfFileInCache(this->path);
+    // RET TRUE IF NOT IN CACHE AND IN LOCAL
+    if (!isInCache) {
+        return Filehandler::exists(this->path);
+    } else {
+        return false;
+    }
+}
+bool Status::getBinary() {
+    return this->binary;
+}
+bool Status::isDeleted() {
+    // RETURN TRUE IF IN CACCHE BUT NOT IN LOCAL
+    vector<string> cachePaths = Status::getAllFilesFromDirectory(Defaults::fgitCaches);
+    bool isInCache = Status::checkIfNameInVector(cachePaths, this->path);
+    if (isInCache) {
+        return !(Filehandler::exists(this->path));
+    } else {
+        return false;
+    }
+}
+bool Status::isModified() {
+    // RETURN TRUE IF IN CAHCE AND IN LOCAL AND MODIFIED
+    vector<string> cachePaths = Status::getAllFilesFromDirectory(Defaults::fgitCaches);
+    bool isInCache = Status::checkIfNameInVector(cachePaths, this->path);
+    if (isInCache) {
+        bool isInLocal = Filehandler::exists(this->path);
+        if (isInLocal) {
+            std::string LocalString, CacheString;
+            LocalString = Filehandler::read(this->path);
+            CacheString = Filehandler::read(Defaults::fgitCaches + this->path);
+            return Diff::isDiff(LocalString, CacheString);
+        } else {
+            return false;
         }
-
-    }
-    
-
-    
-}
-bool status::checkIfItemInMap(std::map<string, pair<bool, bool>> stageMap,string fileName){
-    if(stageMap.count(fileName) > 0){
-        return true;
-    }
-    else{
+    } else {
         return false;
     }
 }
 
-std::map<string, pair<bool, bool>> status::checkThrough() {
-    // Cache check against local
-    map<string, pair<bool, bool>> files;
-    vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
-    for (int i = 0; i < paths.size(); i++) {
-        bool isDelete = isFileDelete(paths[i]);
-        if(isDelete){
-            std::string filePath = Defaults::fgitCaches + paths[i];
-            bool isBinary = status::checkIfBinary(filePath);
-            files.insert(pair<string, pair<bool, bool>>(paths[i], pair<bool, bool>(isDelete, isBinary)));   
-        }
+bool Status::isBinary() {
+    if (!Filehandler::exists(this->path)) {
+        // THORW?
+        return 0;
     }
-    // local against cache
-    vector<string> currentPaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
-    for (int i = 0; i < currentPaths.size(); i++){
-        int isModifiedOrAdded = Staged::ifModifiedOrAdded(currentPaths[i]);
-        bool isInGitIGnore = checkIfNameInVector(Defaults::gitIgnore,currentPaths[i]);
-        if(isModifiedOrAdded != 0 && !isInGitIGnore){
-            bool isBinary = status::checkIfBinary(currentPaths[i]);
-            files.insert(pair<string, pair<bool, bool>>(currentPaths[i], pair<bool, bool>(false, isBinary))); 
-        }
-    }
-    // printMap(files);
-    return files;
-}
 
-std::map<string, pair<bool, int>> status::checkThrough(map<string, pair<bool, int>> files) {
-    // Cache check against local
-    vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
-    for (int i = 0; i < paths.size(); i++) {
-        bool isDelete = isFileDelete(paths[i]);
-        if(isDelete){
-            std::string filePath = Defaults::fgitCaches + paths[i];
-            files.insert(pair<string, pair<bool, int>>(paths[i], pair<bool, int>(isDelete, 1)));   
-        }
-    }
-    // local against cache
-    vector<string> currentPaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
-    for (int i = 0; i < currentPaths.size(); i++){
-        int isModifiedOrAdded = Staged::ifModifiedOrAdded(currentPaths[i]);
-        bool isInGitIGnore = checkIfNameInVector(Defaults::gitIgnore,currentPaths[i]);
-        if(isModifiedOrAdded != 0 && !isInGitIGnore){
-            files.insert(pair<string, pair<bool, int>>(currentPaths[i], pair<bool, int>(false, isModifiedOrAdded))); 
-        }
-    }
-    // printMap(files);
-    return files;
-}
-
-
-bool status::isFileDelete(std::string fileName){
-    ifstream myfile;
-        myfile.open(fileName);
-        if (myfile) {
-            return false;
-        } else {
-            return true;
-        }
-}
-
-// void addModifiedAndNewFile(){
-//     vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
-//     for
-//     Staged::ifModifiedOrAdded(); 
-// }
-
-// void addModifiedAndNewFile(){
-//     vector<string> paths = Staged::getAllFilesFromDirectory(Defaults::fgitCaches.c_str());
-//     for
-//     Staged::ifModifiedOrAdded(); 
-// }
-
-
-bool status::checkIfNameInVector(vector<std::string> gitIgnore,string fileName){
-    for (int i = 0; i < gitIgnore.size(); i++){
-        if(gitIgnore[i].compare(fileName)==0){
-            return true;
-        }
-    }
-    return false;
-}
-
-bool status::checkIfBinary(string fileName) {
     int c;
-    std::ifstream ifs(fileName, std::ios::binary);
+    string filename = this->path;
+    std::ifstream ifs(filename, std::ios::binary);
     if (ifs.fail()) {
         throw "file does not exist";
     }
@@ -145,13 +84,118 @@ bool status::checkIfBinary(string fileName) {
         return true;
     }
 }
-
-bool status::checkIfFileInLocal(std::string fileName){
-    vector <std::string> allHomePaths = Staged::getAllFilesFromDirectory(Defaults::home.c_str());
-    bool inLocal = status::checkIfNameInVector(allHomePaths,fileName);
-    return inLocal;
+// 1 = created , 2 = delete, 3 = modified , 0 means unstageable
+int Status::insertStatusFlag() {
+    if (this->isCreated()) {
+        return 1;
+    } else if (this->isDeleted()) {
+        return 2;
+    } else if (this->isModified()) {
+        return 3;
+    }
+    return 0;
 }
 
-bool status::checkIfFileStagable(string fileName){
-    return status::checkIfItemInMap(status::checkThrough() , fileName);
+vector<string> Status::getAllFilesFromDirectory(std::string subPath) {
+    struct dirent* de; // Pointer for directory entry
+    std::vector<string> cacheFiles;
+    // opendir() returns a pointer of DIR type.
+    DIR* dr = opendir(subPath.c_str());
+
+    if (dr == NULL) // opendir returns NULL if couldn't open directory
+    {
+        throw("Could not open current directory");
+    }
+
+    // Refer http://pubs.opengroup.org/onlinepubs/7990989775/xsh/readdir.html
+    // for readdir()
+    while ((de = readdir(dr)) != NULL)
+        if (de->d_type == DT_REG) {
+
+            cacheFiles.push_back(de->d_name);
+        }
+    closedir(dr);
+    return cacheFiles;
+}
+bool Status::checkIfFileInCache(std::string fileName) {
+    vector<std::string> allCachePaths = Status::getAllFilesFromDirectory(Defaults::fgitCaches);
+    bool inCache = Status::checkIfNameInVector(allCachePaths, fileName);
+    return inCache;
+}
+bool Status::checkIfFileInLocal(std::string fileName) {
+    vector<std::string> allHomePaths = Status::getAllFilesFromDirectory(Defaults::home);
+    bool inLocal = Status::checkIfNameInVector(allHomePaths, fileName);
+    return inLocal;
+}
+bool Status::checkIfNameInVector(std::vector<std::string> Paths, string fileName) {
+    for (int i = 0; i < Paths.size(); i++) {
+        if (Paths[i].compare(fileName) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+std::set<std::string> Status::getAllFiles() {
+    std::vector<std::string> allCachePaths = Status::getAllFilesFromDirectory(Defaults::fgitCaches);
+    std::vector<std::string> allHomePaths = Status::getAllFilesFromDirectory(Defaults::home);
+    std::set<std::string> allFiles;
+    for (int i = 0; i < allCachePaths.size(); i++) {
+        bool ifInGItIgnore = checkIfNameInVector(Defaults::gitIgnore, allCachePaths[i]);
+        if (ifInGItIgnore) {
+            ;
+        } else {
+            allFiles.insert(allCachePaths[i]);
+        }
+    }
+    for (int i = 0; i < allHomePaths.size(); i++) {
+        bool ifInGItIgnore = checkIfNameInVector(Defaults::gitIgnore, allHomePaths[i]);
+        if (ifInGItIgnore) {
+            ;
+        } else {
+            allFiles.insert(allHomePaths[i]);
+        }
+    }
+    return allFiles;
+}
+
+std::map<string, pair<bool, bool>> Status::checkThrough() {
+    std::map<string, pair<bool, bool>> filesMap;
+    std::vector<Status> allStatusObj = Status::getAllStatus();
+    for (auto statObj = allStatusObj.begin(); statObj != allStatusObj.end(); ++statObj) {
+        if (statObj->flagStatus == 2) {
+            filesMap.insert(pair<string, pair<bool, bool>>(
+                statObj->path, pair<bool, bool>(false, statObj->binary)));
+        } else if (statObj->flagStatus == 1 || statObj->flagStatus == 3) {
+            filesMap.insert(pair<string, pair<bool, bool>>(
+                statObj->path, pair<bool, bool>(true, statObj->binary)));
+        }
+    }
+    return filesMap;
+}
+
+void Status::status() {
+    std::vector<Status> allStatusObj = Status::getAllStatus();
+    string StatusArray[3] = {"NEW ADDED", "DELETED", "MODIFED"};
+    for (int i = 1; i <= 3; i++) {
+        cout << endl << "THESE FILES HAS BEEN " << StatusArray[i - 1] << endl;
+        cout << "\nFile STATUS \n"
+             << "=================================================================================="
+                "==\n";
+        for (auto itr = allStatusObj.begin(); itr != allStatusObj.end(); itr++) {
+            if (itr->flagStatus == i) {
+                std::cout << StatusArray[i - 1] << ":\t" << itr->path << "\t" << endl;
+            }
+        }
+    }
+}
+
+std::vector<Status> Status::getAllStatus() {
+    std::set<std::string> allPaths = Status::getAllFiles();
+    std::vector<Status> allStatus;
+    // readFiles(allPaths);
+    for (auto it = allPaths.begin(); it != allPaths.end(); ++it) {
+        Status statObj = Status(*it);
+        allStatus.push_back(statObj);
+    }
+    return allStatus;
 }

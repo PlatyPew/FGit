@@ -1,7 +1,7 @@
 #include "diff.hpp"
 #include "defaults.hpp"
 #include "filehandler.hpp"
-#include "status2.hpp"
+#include "status.hpp"
 
 using std::string, std::cout, std::endl, std::set;
 

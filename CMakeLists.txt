@@ -22,6 +22,6 @@ include_directories(${DMP} ${SHA1} ${CEREAL} ${GZIP})
 add_link_options("-lz")
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
-add_executable(${PROJECT} src/main.cpp src/init.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp  src/status/status.cpp src/status/status2.cpp src/commit/bin.cpp src/add/add.cpp src/reset/reset.cpp src/diff/diff.cpp)
+add_executable(${PROJECT} src/main.cpp src/init.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp  src/status/status.cpp src/commit/bin.cpp src/reset/reset.cpp src/diff/diff.cpp)
 
 target_precompile_headers(${PROJECT} PRIVATE "${DMP}/diff_match_patch.h" "${SHA1}/sha1.hpp")
