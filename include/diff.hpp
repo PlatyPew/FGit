@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defaults.hpp"
+#include "status2.hpp"
 
 #include "diff_match_patch.h"
 #include "sha1.hpp"
@@ -8,14 +9,13 @@
 #include <fstream>
 #include <string>
 
-class Diff {
+class Diff : public Status {
   private:
-    std::string path;
     std::string contents = "";
     void print();
 
   public:
-    Diff(std::string path, bool deleted, bool binary);
+    Diff(std::string path);
     static void diff();
 
     /**

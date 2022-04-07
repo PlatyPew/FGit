@@ -6,10 +6,6 @@
 
 class Status {
   private:
-    std::string path;
-    int flagStatus;
-    bool binary;
-
     bool isCreated();
     bool isModified();
     bool isDeleted();
@@ -19,13 +15,19 @@ class Status {
     bool checkIfFileInCache(std::string fileName);
     static bool checkIfNameInVector(std::vector<std::string> Paths,std::string fileName);
     static std::vector<std::string> getAllFilesFromDirectory(std::string subPath);
-    static std::set<std::string> getAllFiles();// This will get a list of files in the cache and workspace and merge them together
+    static std::vector<Status> getAllStatus(); 
+
+  protected:
+    std::string path;
+    int flagStatus;
+    bool binary;
+
   public:
     Status(std::string path);
     bool getBinary();
     static void status();//Print status
     static std::map<std::string, std::pair<bool, bool>> checkThrough();
     int getStatusFlag();
-    static std::vector<Status> getAllStatus(); 
+    static std::set<std::string> getAllFiles();// This will get a list of files in the cache and workspace and merge them together
     
 };

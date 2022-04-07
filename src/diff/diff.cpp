@@ -1,29 +1,30 @@
 #include "diff.hpp"
 #include "defaults.hpp"
 #include "filehandler.hpp"
-#include "status.hpp"
+#include "status2.hpp"
 
-Diff::Diff(std::string path, bool deleted, bool binary) {
-    this->path = path;
+using std::string, std::cout, std::endl, std::set;
 
+Diff::Diff(std::string path) : Status(path) {
     if (binary) {
         this->contents = "File is Binary";
         return;
     }
 
     string cache = Defaults::fgitCaches + path;
+    switch (flagStatus) {
+    case 1:
+        this->contents = Diff::diff("", Filehandler::read(path));
+        break;
 
-    if (deleted) {
+    case 2:
         this->contents = Diff::diff(Filehandler::read(cache), "");
-        return;
-    }
+        break;
 
-    // Spaghettii woooooohoohohoo
-    if (!Filehandler::exists(cache))
-        this->contents = Diff::diff("", Filehandler::read(path)); // File was created
-    else
-        this->contents =
-            Diff::diff(Filehandler::read(cache), Filehandler::read(path)); // File was modified
+    case 3:
+        this->contents = Diff::diff(Filehandler::read(cache), Filehandler::read(path));
+        break;
+    }
 }
 
 void Diff::print() {
@@ -32,9 +33,10 @@ void Diff::print() {
 }
 
 void Diff::diff() {
-    map<string, pair<bool, bool>> files = status::checkThrough();
-    for (auto const& [key, value] : files) {
-        Diff d(key, value.first, value.second);
-        d.print();
+    set<string> files = getAllFiles();
+    for (auto const& f : files) {
+        Diff d(f);
+        if (d.getStatusFlag())
+            d.print();
     }
 }
