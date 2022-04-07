@@ -11,5 +11,5 @@ const std::string fgitCaches = fgitDirectory + "caches/";
 const std::string fgitHead = fgitRefs + "HEAD";
 const std::string fgitLatest = fgitRefs + "LATEST";
 const std::string home = ".";
-const std::vector<std::string> gitIgnore = {".gitignore",".gitmodules","CMakeLists.txt","LICENSE","README.md", "password.txt"} ;     
+const std::vector<std::string> gitIgnore = {".gitignore",".gitmodules","CMakeLists.txt","LICENSE","README.md", "password.txt", "fgit"} ;     
 }; // namespace Defaults
