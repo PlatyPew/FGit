@@ -177,10 +177,6 @@ void Status::status() {
     std::vector<Status> allStatusObj = Status::getAllStatus();
     string StatusArray[3] = {"NEW ADDED", "DELETED", "MODIFED"};
     for (int i = 1; i <= 3; i++) {
-        cout << endl << "THESE FILES HAS BEEN " << StatusArray[i - 1] << endl;
-        cout << "\nFile STATUS \n"
-             << "=================================================================================="
-                "==\n";
         for (auto itr = allStatusObj.begin(); itr != allStatusObj.end(); itr++) {
             if (itr->flagStatus == i) {
                 std::cout << StatusArray[i - 1] << ":\t" << itr->path << "\t" << endl;
