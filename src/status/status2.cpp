@@ -177,48 +177,47 @@ void Status::readFiles(T allPaths){
 
 std::map<string, pair<bool, bool>> Status::checkThrough(){
     std::map<string, pair<bool, bool>> filesMap;
-    std::set<std::string> allPaths = Status::getAllFiles();
-    // readFiles(allPaths);
-    for (auto it = allPaths.begin(); it != allPaths.end(); ++it){
-        Status statObj = Status(*it);
-        if(statObj.flagStatus == 2){
-            filesMap.insert(pair<string, pair<bool, bool>>(statObj.path, pair<bool, bool>(false, statObj.binary))); 
+     std::vector<Status> allStatusObj = Status::getAllStatus();
+    for (auto statObj = allStatusObj.begin(); statObj != allStatusObj.end(); ++statObj){
+        if(statObj->flagStatus == 2){    
+            filesMap.insert(pair<string, pair<bool, bool>>(statObj->path, pair<bool, bool>(false, statObj->binary))); 
         }
-        else if(statObj.flagStatus == 1 || statObj.flagStatus == 3){
-            filesMap.insert(pair<string, pair<bool, bool>>(statObj.path, pair<bool, bool>(true, statObj.binary)));   
+        else if(statObj->flagStatus == 1 || statObj->flagStatus == 3){
+            filesMap.insert(pair<string, pair<bool, bool>>(statObj->path, pair<bool, bool>(true, statObj->binary)));   
         }
     }
     return filesMap;
 }
 
-std::map<string, pair<bool, int>> Status::checkThrough(map<string, pair<bool, int>> files) {
-    std::map<string, pair<bool, int>> filesMap;
-    std::set<std::string> allPaths = Status::getAllFiles();
-    // readFiles(allPaths);
-    for (auto it = allPaths.begin(); it != allPaths.end(); ++it){
-        Status statObj = Status(*it);
-        if(statObj.flagStatus == 2){
-            filesMap.insert(pair<string, pair<bool, int>>(statObj.path, pair<bool, int>(false, statObj.flagStatus))); 
-        }
-        else if(statObj.flagStatus == 1 || statObj.flagStatus == 3){
-            filesMap.insert(pair<string, pair<bool, int>>(statObj.path, pair<bool, int>(true, statObj.flagStatus)));   
-        }
-    }
-    return filesMap;
-}
-    
-void Status::printMap(){
-    map<string, pair<bool, int>> files;
+
+void Status::printStatus(){
+    std::vector<Status> allStatusObj = Status::getAllStatus();
     string StatusArray[3] = {"DELETED","MODIFIED","NEWLY ADDED"};
-    vector<int> StatusFlag;
-    std::map<string, pair<bool, int>> stageMap = Status::checkThrough(files);
-    cout << "\nFile STATUS \n" << "====================================================================================\n";
     for(int i = 1; i <=3; i++){
         cout << endl<<"THESE FILES HAS BEEN " << StatusArray[i-1] << endl;
-        for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++){
-            if(itr->second.second == i){
-                std::cout << StatusArray[i-1] <<":\t"<< itr->first<< "\t" <<endl;
+        cout << "\nFile STATUS \n" << "====================================================================================\n";
+        for (auto itr = allStatusObj.begin(); itr != allStatusObj.end(); itr++){
+            if(itr->flagStatus == i){
+                std::cout << StatusArray[i-1] <<":\t"<< itr->path<< "\t" <<endl;
             }
         }
     }
+}
+
+void Status::printMap(){
+    std::map<string, pair<bool, bool>> stageMap = Status::checkThrough();
+    cout << "\n These files are stagable! \n";
+    for (auto itr = stageMap.begin(); itr != stageMap.end(); itr++)
+            std::cout <<endl<< itr->first<< "\t" << itr->second.first<< "\t"<< itr->second.second<< "\t" << endl;
+}
+std::vector<Status> Status::getAllStatus(){
+    std::set<std::string> allPaths = Status::getAllFiles();
+    std::vector<Status> allStatus;
+    // readFiles(allPaths);
+    for (auto it = allPaths.begin(); it != allPaths.end(); ++it){
+        Status statObj = Status(*it);
+        allStatus.push_back(statObj);
+        
+    }
+    return allStatus;
 }

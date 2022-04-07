@@ -33,5 +33,8 @@ class Status {
     static std::map<std::string, std::pair<bool, bool>> checkThrough();
     static std::map<std::string, std::pair<bool, int>> checkThrough( std::map<std::string, std::pair<bool, int>> files);
     int getStatusFlag();
-    static void printMap();
+    static void printStatus(); //Print status
+    static void printMap();// Used to check if map is working
+    static std::vector<Status> getAllStatus(); 
+    
 };
