@@ -50,7 +50,7 @@ string Blob::createDiff(bool genesis) {
     ifstream fileOld(Defaults::fgitCaches + this->path);
     stringstream oldData;
     if (!fileOld)
-        throw "File cannot be opened";
+        oldData << "";
 
     oldData << fileOld.rdbuf();
     fileOld.close();
