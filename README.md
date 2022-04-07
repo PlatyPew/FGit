@@ -13,6 +13,8 @@ A crappier version of git
 
 ## Building
 
+You can download the binaries [here](https://github.com/PlatyPew/Fake-Git/releases) (macOS and Linux only)
+
 ```sh
 # Cloning the repo
 git clone --recurse-submodules https://github.com/PlatyPew/Fake-Git.git

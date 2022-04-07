@@ -8,9 +8,10 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+find_package(ZLIB REQUIRED)
 
 set(DMP "${PROJECT_SOURCE_DIR}/lib/dmp")
 set(SHA1 "${PROJECT_SOURCE_DIR}/lib/sha1" )
@@ -19,9 +20,7 @@ set(GZIP "${PROJECT_SOURCE_DIR}/lib/gzip/include")
 
 include_directories(${DMP} ${SHA1} ${CEREAL} ${GZIP})
 
-add_link_options("-lz")
-
 include_directories("${PROJECT_SOURCE_DIR}/include")
 add_executable(${PROJECT} src/main.cpp src/init.cpp src/commit/blob.cpp src/commit/commit.cpp src/commit/blob.cpp src/logging/log.cpp  src/status/status.cpp src/commit/bin.cpp src/reset/reset.cpp src/diff/diff.cpp)
 
-target_precompile_headers(${PROJECT} PRIVATE "${DMP}/diff_match_patch.h" "${SHA1}/sha1.hpp")
+target_link_libraries(${PROJECT} ZLIB::ZLIB)
